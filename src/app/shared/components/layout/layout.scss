@@ -1,0 +1,42 @@
+/* Layout component styles */
+.container-xxl {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.main-content {
+  min-height: calc(100vh - 60px);
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.order-first {
+  order: 1;
+}
+
+.order-second {
+  order: 2;
+}
+
+.order-third {
+  order: 3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .main-content {
+    padding-top: 15px;
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+  
+  .order-first, .order-second, .order-third {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,103 @@
+<nav class="sidebar">
+  <div class="sidebar-sticky">
+
+    
+
+  
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link {{isActive('/')}} " [routerLink]="['']">
+          <i class="fas fa-home"></i> Questions
+        </a>
+      </li>
+        <!-- <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-question"></i> Questions
+        </a>
+        </li> -->
+        <li class="nav-item ">
+            <a class="nav-link {{isActive('/tags')}}" [routerLink]="['/tags']">
+                <i class="fas fa-tags"></i> Tags
+            </a>
+        </li>
+        <!-- <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-trophy"></i> Challenges
+        </a>
+        </li> -->
+        <!-- <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-comments"></i> Chat
+        </a>
+        </li> -->
+        <!-- <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-newspaper"></i> Articles
+        </a>
+        </li> -->
+        <li class="nav-item ">
+        <a class="nav-link {{isActive('/users')}}" [routerLink]="['/users']" >
+            <i class="fas fa-users"></i>Top Users
+        </a>
+        </li>
+        
+        @if(isLoggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" [class]="isActive('/profile')" routerLink="/profile">
+            <i class="fas fa-user"></i> Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class]="isActive('/my-questions')" routerLink="/my-questions">
+            <i class="fas fa-question-circle"></i> My Questions
+          </a>
+        </li>
+        }
+
+
+        @if (!(isLoggedIn && currentUser)) {
+            <li class="nav-item">
+                <a routerLink="/login" class="nav-link" [class]="isActive('/login')">
+                    <i class="fas fa-sign-in-alt"></i> Log In
+                </a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/register" class="nav-link" [class]="isActive('/register')">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </li>
+       
+        }@else {
+            <li class="d-flex align-items-center nav-link">
+                <div class="avatar bg-primary text-white rounded-circle me-2">
+                    {{ currentUser.name.charAt(0).toUpperCase() }}
+                </div>
+                <div class="user-info">
+                    <div class="text-black">{{ currentUser.name }}</div>
+                    <div class="text-muted small">{{ currentUser.username }}</div>
+                </div>
+            </li>
+        }
+
+
+
+
+    </ul>
+
+    
+    @if (isLoggedIn && currentUser) {
+        <div class="user-profile mb-4">
+            
+            <div class="mt-2">
+            <button class="btn btn-sm btn-outline-danger w-100" (click)="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </button>
+            </div>
+        </div>
+    } 
+        
+
+
+
+  </div>
+</nav>

@@ -1,0 +1,328 @@
+
+<div class="answers-section mb-4">
+    
+     @if (isLoading) {
+                <div class="d-flex justify-content-center my-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+                }
+    
+    
+    @if(topComment){
+        
+        <h3 class="section-title mb-3">Top Answer</h3>
+
+
+         <!-- Top Answer -->
+  <div class="answer-item top-answer mb-4 border border-success rounded">
+    <div class="row">
+      <div class="col-md-1 vote-section text-center">
+        <button class="btn btn-outline-secondary btn-sm mb-2">
+          <i class="fas fa-chevron-up"></i>
+        </button>
+        <div class="vote-count fw-bold text-success">{{ topComment && topComment.votes }}</div>
+        <button class="btn btn-outline-secondary btn-sm mt-2">
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="accepted-answer mt-2">
+          <i class="fas fa-star text-warning fs-5"></i>
+        </div>
+      </div>
+      
+      <div class="col-md-11 answer-content">
+        <div class="answer-text mb-3">
+          {{ topComment && topComment.comment }}
+        </div>
+        
+        <div class="answer-actions d-flex justify-content-end align-items-center mb-3 mx-2">
+          <!-- <div class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary reply-btn" (click)="toggleReplyForm($event)">
+              <i class="fas fa-reply me-1"></i>Commentaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            </button>
+          </div> -->
+            <!-- Reply Form for Answer (initially hidden) -->
+        <!-- <div class="reply-form mb-3" style="display: none;">
+          <textarea class="form-control mb-2" rows="2" placeholder="Add your comment..."></textarea>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-primary">Post Comment</button>
+            <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
+          </div>
+        </div> -->
+          <div class="author-info  text-end">
+            <div class="author-card p-2 bg-light rounded">
+              <small class="text-muted">answered by</small>
+              <div class="d-flex align-items-center">
+                 <div class="avatar bg-primary text-white rounded-circle me-2 d-flex justify-content-center align-items-center">
+                    {{ topComment.user.name.charAt(0).toUpperCase() }}
+                  </div>
+                <div>
+                  <div class="fw-bold">{{ topComment && topComment.user && topComment.user.name || 'User' }}</div>
+                  <div class="text-muted small">{{ topComment && topComment.user && topComment.user.username || 'username' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+
+        <!-- Comments on Top Answer -->
+        <div class="answer-comments bg-light p-3 rounded">
+          <h6 class="mb-3">Comments:</h6>
+          
+
+          @for (comment of (topComment && topComment.replies) || []; track comment.id) {
+            <div class="comment-item mb-3" [attr.data-id]="comment.id">
+              <div class="d-flex">
+                <div class="avatar bg-primary text-white rounded-circle me-2 d-flex justify-content-center align-items-center">
+                    {{ topComment.user.name.charAt(0).toUpperCase() }}
+                  </div>
+                <div class="comment-content flex-grow-1">
+                  <span class="comment-text">{{ comment.comment }}</span>
+                  <span class="text-muted small ms-2">- {{ comment.user.name }}</span>
+                  
+                  <!-- Comment Actions -->
+                  <div class="comment-actions mt-1">
+                    <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+                      <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <span class="vote-count small me-1">{{ comment.votes }}</span>
+                    <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+                      <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
+                      <i class="fas fa-reply"></i>
+                    </button>
+                  </div>
+
+                  <!-- Reply Form (hidden) -->
+                  <div class="reply-form mt-2" style="display: none;">
+                    <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-sm btn-primary">Post Reply</button>
+                      <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
+                    </div>
+                  </div>
+                  
+                  <!-- Nested Comments recursive template -->
+                  @if (comment.replies && comment.replies.length > 0) {
+                    <ng-container 
+                      [ngTemplateOutlet]="nestedReplies"
+                      [ngTemplateOutletContext]="{replies: comment.replies, level: 1}">
+                    </ng-container>
+                  }
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center text-muted py-3">No comments yet.</div>
+          }
+          
+          <div class="add-comment mt-3">
+            <textarea class="form-control mb-2" rows="2" placeholder="Add a comment to this answer..."></textarea>
+            <button class="btn btn-sm btn-primary">Add Comment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  }
+ 
+
+
+
+
+
+
+
+
+
+
+    @if(answers.length > 0){
+
+
+
+<!-- Other Answers -->
+  <h4 class="section-title mb-3 mt-4">All Answers</h4>
+  
+
+  @for (answer of answers; track answer.id) {
+    <div class="answer-item smaller-answer mb-3 p-3 border rounded">
+      <div class="row">
+        <div class="col-md-1 vote-section text-center">
+          <button class="btn btn-outline-secondary btn-sm mb-1">
+            <i class="fas fa-chevron-up"></i>
+          </button>
+          <div class="vote-count fw-bold">{{ answer.votes }}</div>
+          <button class="btn btn-outline-secondary btn-sm mt-1">
+            <i class="fas fa-chevron-down"></i>
+          </button>
+        </div>
+        
+        <div class="col-md-11 answer-content">
+          <div class="answer-text mb-2">
+            <p class="mb-2">{{ answer.comment }}</p>
+          </div>
+          
+          <div class="answer-actions d-flex justify-content-between align-items-center mb-2">
+            <div class="action-buttons">
+              <button class="btn btn-sm btn-outline-secondary me-2">
+                <i class="fas fa-thumbs-up me-1"></i>Helpful
+              </button>
+              <button class="btn btn-sm btn-outline-primary reply-btn" (click)="toggleReplyForm($event)">
+                <i class="fas fa-reply me-1"></i>Comment
+              </button>
+            </div>
+            
+            <div class="author-info text-end">
+              <div class="author-card p-1 bg-light rounded">
+                <small class="text-muted">answered by</small>
+                <div class="d-flex align-items-center">
+                  <div class="avatar bg-primary text-white rounded-circle me-2 d-flex justify-content-center align-items-center">
+                    {{ topComment.user.name.charAt(0).toUpperCase() }}
+                  </div>
+                  <div>
+                    <div class="fw-bold small">{{ answer.user.name }}</div>
+                    <div class="text-muted small">{{ answer.user.username }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reply Form (hidden) -->
+          <div class="reply-form mb-2" style="display: none;">
+            <textarea class="form-control mb-2" rows="2" placeholder="Add your comment..."></textarea>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-primary">Post Comment</button>
+              <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
+            </div>
+          </div>
+
+          
+          <div class="answer-comments bg-light p-2 rounded">
+           
+            @if (answer.replies && answer.replies.length > 0) {
+              @for (reply of answer.replies; track reply.id) {
+                <div class="comment-item mb-2">
+                  <div class="d-flex">
+                    <div class="avatar bg-primary text-white rounded-circle me-2 d-flex justify-content-center align-items-center">
+                        {{ topComment.user.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div class="comment-content flex-grow-1">
+                      <span class="comment-text small">{{ reply.comment }}</span>
+                      <span class="text-muted small ms-2">- {{ reply.user.name }}</span>
+                      
+                      <!-- Comment Actions -->
+                      <div class="comment-actions mt-1">
+                        <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+                          <i class="fas fa-chevron-up"></i>
+                        </button>
+                        <span class="vote-count small me-1">{{ reply.votes }}</span>
+                        <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+                          <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                      </div>
+
+                      <!-- Reply Form (hidden) -->
+                      <div class="reply-form mt-2" style="display: none;">
+                        <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-sm btn-primary">Post Reply</button>
+                          <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
+                        </div>
+                      </div>
+                      
+                      <!-- Nested replies recursive  -->
+                      @if (reply.replies && reply.replies.length > 0) {
+                        <ng-container 
+                          [ngTemplateOutlet]="nestedReplies"
+                          [ngTemplateOutletContext]="{replies: reply.replies, level: 1}">
+                        </ng-container>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="text-center text-muted py-2">No comments yet.</div>
+            }
+            
+            <div class="add-comment mt-2">
+              <textarea class="form-control mb-2" rows="2" placeholder="Add a comment to this answer..."></textarea>
+              <button class="btn btn-sm btn-primary">Add Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="text-center text-muted my-4">No answers yet.</div>
+  }
+
+
+        
+
+    }
+    @else {
+      <h4 class="text-center text-muted my-4">There is no answers for this question</h4>
+    }
+  
+</div>
+
+
+<ng-template #nestedReplies let-replies="replies" let-level="level">
+  @for (deepReply of replies; track deepReply.id) {
+    <div class="nested-comment mt-2 ms-3 ps-3 border-start border-secondary">
+      <div class="d-flex">
+        <div class="avatar bg-primary text-white rounded-circle me-1 d-flex justify-content-center align-items-center">
+          {{ deepReply.user.name.charAt(0).toUpperCase() }}
+        </div>
+        <div class="comment-content flex-grow-1">
+          <span class="comment-text small">{{ deepReply.comment }}</span>
+          <span class="text-muted small ms-2">- {{ deepReply.user.name }}</span>
+          
+          
+          <div class="comment-actions mt-1">
+            <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+              <i class="fas fa-chevron-up"></i>
+            </button>
+            <span class="vote-count small me-1">{{ deepReply.votes }}</span>
+            <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
+              <i class="fas fa-reply"></i>
+            </button>
+          </div>
+
+          <!-- Reply Form (hidden) -->
+          <div class="reply-form mt-2" style="display: none;">
+            <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-primary">Post Reply</button>
+              <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
+            </div>
+          </div>
+          
+         
+          @if (deepReply.replies && deepReply.replies.length > 0) {
+            <ng-container 
+              [ngTemplateOutlet]="nestedReplies" 
+              [ngTemplateOutletContext]="{replies: deepReply.replies, level: level + 1}">
+            </ng-container>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</ng-template>

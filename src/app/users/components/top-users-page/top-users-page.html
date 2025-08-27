@@ -1,0 +1,81 @@
+
+<app-layout>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Top Users</h1>
+      <p class="text-muted">Our community's most active contributors</p>
+    </div>
+  </div>
+
+
+  @if (isLoading) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
+
+  @if (errorMessage) {
+    <div class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  }
+
+
+  @if (topUsers.length > 0) {
+    <div class="top-users-list">
+      @for (user of topUsers; track user.id) {
+        <div class="card mb-4 user-card">
+          <div class="card-body">
+            <div class="d-flex align-items-start">
+              
+              <div class="user-info me-4">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="avatar bg-primary text-white rounded-circle me-2 d-flex justify-content-center align-items-center">
+                    {{ user.name.charAt(0).toUpperCase() }}
+                  </div>
+                  <div>
+                    <h5 class="mb-0">{{ user.name }}</h5>
+                    <p class="text-muted mb-0">@{{ user.username }}</p>
+                  </div>
+                </div>
+                <div class="reputation mb-3">
+                  <span class="badge bg-success">{{ user.reputation }} reputation</span>
+                </div>
+              </div>
+
+              
+              <div class="popular-question flex-grow-1">
+                <h6>Most Popular Question:</h6>
+                <a [routerLink]="['/question', user.mostPopularQuestion.id]" class="question-link">
+                  {{ user.mostPopularQuestion.title }}
+                </a>
+                <div class="question-stats d-flex mt-2">
+                  <span class="me-3 small text-muted">
+                    <i class="fas fa-eye me-1"></i> {{ user.mostPopularQuestion.numberOfViews }} views
+                  </span>
+                  <span class="me-3 small text-muted">
+                    <i class="fas fa-comment me-1"></i> {{ user.mostPopularQuestion.numberOfAnswers }} answers
+                  </span>
+                  <span class="small text-muted">
+                    <i class="fas fa-tag me-1"></i>
+                    @for (tag of user.mostPopularQuestion.tags; track $index) {
+                      <span class="badge bg-light text-dark me-1">{{ tag }}</span>
+                    }
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="text-center py-5">
+          <p>No top users found at the moment.</p>
+        </div>
+      }
+    </div>
+  }
+</app-layout>

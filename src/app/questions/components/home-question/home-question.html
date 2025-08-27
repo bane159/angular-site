@@ -1,0 +1,51 @@
+<div class="question-item border-bottom py-3">
+    <div class="row">
+    <div class="col-md-2 col-3 text-center question-stats-col">
+        <div class="stat-item">
+        <span class="stat-number">{{question.numberOfComments}}</span>
+        <span class="stat-label">comments</span>
+        </div>
+        <div class="stat-item">
+        <span class="stat-number bg-success text-white">{{question.numberOfAnswers}}</span>
+        <span class="stat-label">answers</span>
+        </div>
+        <div class="stat-item">
+        <span class="stat-number">{{question.numberOfViews}}</span>
+        <span class="stat-label">views</span>
+        </div>
+        <div class="bounty-badge">{{question.numberOfComments + question.numberOfAnswers}}</div>
+    </div>
+    <div class="col-md-10 col-9">
+        <h5 class="question-title">
+        <a [routerLink]="['/question', question.id]" class="text-decoration-none">{{question.title}}</a>
+        </h5>
+        <p class="question-excerpt text-muted">
+        {{question.content}}
+        </p>
+
+        <div class="question-tags mb-2">
+            @for(tag of question.tags; track tag) {
+                <span class="badge bg-light text-dark me-1">{{tag}}</span>
+            }
+        </div>
+
+
+        <div class="question-tags mb-2">
+            @for(category of question.categories; track category) {
+                <span class="badge bg-light text-dark me-1">{{category}}</span>
+            }
+        </div>
+
+
+
+        <div class="question-meta">
+            <!-- NAPRAVI PIPE OVDE DA IZGLEDA U FORMATU: asked Aug 6 at 15:33 by -->
+        <span class="text-muted">asked {{question.askedAt | date:'short'}} by</span> 
+        <a href="#" class="user-link">{{question.userName}}</a>
+        <!-- <span class="reputation">{{question.userReputation}}</span> -->
+        </div>
+    </div>
+    </div>
+</div>
+
+      

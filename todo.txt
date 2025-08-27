@@ -1,0 +1,6 @@
+Autorizacija
+Postovanje pitanja
+Postovanje komentara
+Promena korisnickih podataka
+
+sredi aside sekcije i to je to za ceo projekat

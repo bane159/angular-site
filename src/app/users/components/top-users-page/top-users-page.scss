@@ -1,0 +1,49 @@
+.user-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.question-link {
+  color: #0366d6;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+}
+
+.reputation .badge {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .d-flex.align-items-start {
+    flex-direction: column;
+  }
+  
+  .user-info {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .popular-question {
+    width: 100%;
+  }
+}

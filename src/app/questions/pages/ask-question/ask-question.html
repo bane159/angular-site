@@ -1,0 +1,125 @@
+<app-layout>
+  <div class="ask-question-container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h2 class="text-center mb-0">Ask a Question</h2>
+          </div>
+          <div class="card-body p-4">
+            @if (errorMessage) {
+              <div class="alert alert-danger">
+                {{ errorMessage }}
+              </div>
+            }
+            
+            <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+              <!-- Title Field -->
+              <div class="mb-3">
+                <label for="title" class="form-label">Question Title *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="title" 
+                  formControlName="title"
+                  [class.is-invalid]="isFieldInvalid('title')"
+                  placeholder="What's your programming question? Be specific."
+                >
+                @if (isFieldInvalid('title')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('title') }}
+                  </div>
+                }
+                <div class="form-text">
+                  Be specific and imagine you're asking a question to another person
+                </div>
+              </div>
+
+              <!-- Content Field -->
+              <div class="mb-3">
+                <label for="content" class="form-label">Question Details *</label>
+                <textarea 
+                  class="form-control" 
+                  id="content" 
+                  formControlName="content"
+                  [class.is-invalid]="isFieldInvalid('content')"
+                  rows="8"
+                  placeholder="Provide all the details someone would need to understand and answer your question..."
+                ></textarea>
+                @if (isFieldInvalid('content')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('content') }}
+                  </div>
+                }
+                <div class="form-text">
+                  Include details about what you tried and what went wrong
+                </div>
+              </div>
+
+              <!-- Category Field -->
+              <div class="mb-3">
+                <label for="category" class="form-label">Category *</label>
+                <select 
+                  class="form-control" 
+                  id="category" 
+                  formControlName="category"
+                  [class.is-invalid]="isFieldInvalid('category')"
+                >
+                  <option value="">Select a category...</option>
+                  @for(category of categories; track category.id) {
+                    <option [value]="category.id">{{ category.category }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('category')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('category') }}
+                  </div>
+                }
+              </div>
+
+              <!-- Tags Field -->
+              <div class="mb-4">
+                <label for="tags" class="form-label">Tags</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="tags" 
+                  formControlName="tags"
+                  [class.is-invalid]="isFieldInvalid('tags')"
+                  placeholder="javascript, angular, typescript, debugging"
+                >
+                @if (isFieldInvalid('tags')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('tags') }}
+                  </div>
+                }
+                <div class="form-text">
+                  Add up to 5 tags to describe what your question is about. Separate tags with commas.
+                </div>
+              </div>
+              @if(isSubmitting) {
+                <div class="mb-3">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Submitting...</span>
+                  </div>
+                  <span class="ms-2">Submitting your question...</span>
+                </div>
+              }
+              <!-- Submit Button -->
+              <div class="d-grid gap-2">
+                <button 
+                  type="submit" 
+                  class="btn btn-primary btn-lg" 
+                  [disabled]="questionForm.invalid || isSubmitting"
+                >
+                  <i class="fas fa-paper-plane me-2"></i>
+                  Post Your Question
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

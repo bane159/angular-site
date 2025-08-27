@@ -1,0 +1,34 @@
+.tag-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.tag-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tag-link {
+  text-decoration: none;
+  
+  .badge {
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    
+    &:hover {
+      background-color: #17a2b8 !important;
+      color: white !important;
+    }
+  }
+  p{
+    font-size: 10px!important;
+  }
+}
+
+.tags-container {
+  margin-top: 1.5rem;
+}
+
+.tag-count {
+  margin-top: 0.5rem;
+}

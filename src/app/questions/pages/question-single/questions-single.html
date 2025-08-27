@@ -1,0 +1,247 @@
+<div class="container-xxl">
+  <div class="row">
+    
+    <app-sidenav class="col-lg-2 col-md-3 col-12 order-first"></app-sidenav>
+
+   
+    <main class="col-lg-7 col-md-9 col-12 order-second main-content">
+      <!--  Header -->
+        
+      <div class="question-header mb-4">
+
+         @if (isLoading) {
+                <div class="d-flex justify-content-center my-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+                }
+
+        <h1 class="question-title">{{question.title}}</h1>
+
+        <div class="question-meta d-flex flex-wrap gap-3 mb-3">
+          <span class="text-muted">
+            <i class="fas fa-clock me-1"></i>
+            Asked {{question.askedAt | uploadedAgo}}
+          </span>
+          <span class="text-muted">
+            <i class="fas fa-eye me-1"></i>
+            Viewed {{question.numberOfViews}} times
+          </span>
+          <span class="text-muted">
+            <i class="fas fa-box me-1"></i>
+            {{question.numberOfComments}} Comments
+          </span>
+        </div>
+      </div>
+
+      <!-- Question Votes -->
+      <div class="question-body mb-4">
+        <div class="row">
+          
+          <div class="col-md-1 vote-section text-center">
+            <button class="btn btn-outline-secondary btn-sm mb-2">
+              <i class="fas fa-chevron-up"></i>
+            </button>
+            <div class="vote-count fw-bold">{{question.numberOfVotes}}</div>
+            <button class="btn btn-outline-secondary btn-sm mt-2">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <button class="btn btn-outline-warning btn-sm mt-3">
+              <i class="fas fa-bookmark"></i>
+            </button>
+          </div>
+
+          <!-- Question Content -->
+          <div class="col-md-11 question-content">
+            <div class="question-text mb-3">
+              
+              {{question.content}}
+              
+             
+
+
+            </div>
+
+            <!-- Question Tags -->
+            <div class="question-tags mb-3">
+
+              @for(tag of question.tags; track tag) {
+                <span class="badge bg-light text-dark me-2">{{tag}}</span>
+              }
+            </div>
+            <div class="question-cats mb-3">
+              @for(category of question.categories; track category) {
+                <span class="badge bg-light text-dark me-2">{{category}}</span>
+              }
+            </div>
+
+
+            
+           
+            <div class="question-actions d-flex justify-content-between align-items-center">
+              <div class="action-buttons">
+                <!-- <button class="btn btn-sm btn-outline-secondary me-2">
+                  <i class="fas fa-share me-1"></i>Share
+                </button>
+                <button class="btn btn-sm btn-outline-secondary me-2">
+                  <i class="fas fa-flag me-1"></i>Flag
+                </button> -->
+                <button class="btn btn-sm btn-outline-primary reply-btn" #replyBtn1 (click)="toggleReplyForm(replyBtn1)">
+                  <i class="fas fa-reply me-1"></i>Comment
+                </button>
+              </div>
+               <!-- Reply Form for Answer (initially hidden) -->
+              <div class="reply-form mb-3" style="display: none;">
+                <textarea class="form-control mb-2" rows="2" placeholder="Add your comment..."></textarea>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-primary">Post Comment</button>
+                  <button class="btn btn-sm btn-secondary" onclick="toggleReplyForm(this)">Cancel</button>
+                </div>
+              </div>
+
+              
+              <div class="author-info text-end">
+                <div class="author-card p-2 bg-light rounded">
+                  <small class="text-muted">asked by</small>
+                  <div class="d-flex align-items-center">
+                    
+                    <div>
+                      <div class="fw-bold">{{question.userName}}</div>
+                      <div class="text-muted small">{{reputation}} reputation</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <app-top-answer></app-top-answer>
+
+
+      <app-comments [qu-id]="question.userId"></app-comments>
+
+
+      <div class="add-comment my-3">
+        <h4 class="section-title mb-3">Your Comment on the Question</h4>
+        <textarea class="form-control mb-2" rows="6" placeholder="Add a comment..."></textarea>
+        <button class="btn btn-sm btn-primary">Add Comment</button>
+      </div>
+      <!-- Write Answer Section -->
+      <div class="write-answer-section">
+        <h4 class="section-title mb-3">Your Answer on the Question</h4>
+        <textarea class="form-control mb-3" rows="6" placeholder="Share your experience or advice about work-life balance..."></textarea>
+        <button class="btn btn-primary">Post Your Answer</button>
+      </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ASIDE  -->
+    <aside class="col-lg-3 col-12 order-third right-sidebar">
+      <!-- Question Stats -->
+      <div class="sidebar-section mb-4">
+        <h5 class="sidebar-title bg-primary text-white p-2 mb-0">Question Stats</h5>
+        <div class="sidebar-content p-3 border">
+          <div class="stat-item mb-2">
+            <div class="d-flex justify-content-between">
+              <span>Asked</span>
+              <span class="fw-bold">{{question.askedAt | uploadedAgo}}</span>
+            </div>
+          </div>
+          <div class="stat-item mb-2">
+            <div class="d-flex justify-content-between">
+              <span>Viewed</span>
+              <span class="fw-bold">{{question.numberOfViews}} times</span>
+            </div>
+          </div>
+          <div class="stat-item mb-2">
+            <div class="d-flex justify-content-between">
+              <span>Comments</span>
+              <span class="fw-bold">{{question.numberOfComments}} comments posted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Questions -->
+      <div class="sidebar-section mb-4">
+        <h5 class="sidebar-title bg-info text-white p-2 mb-0">Related Questions</h5>
+        <div class="sidebar-content p-3 border">
+          <div class="related-item mb-3">
+            <a href="#" class="text-decoration-none">
+              <div class="d-flex">
+                <span class="badge bg-secondary me-2">12</span>
+                <span class="small">How to set boundaries with colleagues when working remotely?</span>
+              </div>
+            </a>
+          </div>
+          <div class="related-item mb-3">
+            <a href="#" class="text-decoration-none">
+              <div class="d-flex">
+                <span class="badge bg-success me-2">8</span>
+                <span class="small">Best home office setup for productivity and comfort</span>
+              </div>
+            </a>
+          </div>
+          <div class="related-item mb-3">
+            <a href="#" class="text-decoration-none">
+              <div class="d-flex">
+                <span class="badge bg-warning me-2">15</span>
+                <span class="small">Managing remote work stress and burnout</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hot Network Questions -->
+      <!-- <div class="sidebar-section">
+        <h5 class="sidebar-title bg-warning text-dark p-2 mb-0">Hot Network Questions</h5>
+        <div class="sidebar-content p-3 border">
+          <div class="hot-question mb-2">
+            <a href="#" class="text-decoration-none small">
+              <i class="fas fa-fire text-danger me-1"></i>
+              Effective time management techniques for remote workers
+            </a>
+          </div>
+          <div class="hot-question mb-2">
+            <a href="#" class="text-decoration-none small">
+              <i class="fas fa-fire text-danger me-1"></i>
+              How to maintain team communication while working from home
+            </a>
+          </div>
+          <div class="hot-question mb-2">
+            <a href="#" class="text-decoration-none small">
+              <i class="fas fa-fire text-danger me-1"></i>
+              Digital wellness: managing screen time and digital fatigue
+            </a>
+          </div>
+        </div>
+      </div> -->
+    </aside>
+  </div>
+</div>
+

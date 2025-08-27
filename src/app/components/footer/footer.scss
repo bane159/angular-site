@@ -1,0 +1,317 @@
+.footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: #ecf0f1;
+  margin-top: 4rem;
+  border-top: 3px solid #ff6a00;
+  
+  .footer-brand {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+  }
+  
+  .footer-description {
+    color: #bdc3c7;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer-heading {
+    color: #ff6a00;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid #ff6a00;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: 0.7rem;
+    }
+  }
+  
+  .footer-link {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    
+    &:hover {
+      color: #ff6a00;
+      text-decoration: none;
+      transform: translateX(5px);
+    }
+  }
+}
+
+
+.footer .social-links {
+  .social-title {
+    color: #ff6a00;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ff6a00;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    margin: 0.25rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    
+    &:hover {
+      background: linear-gradient(135deg, #ff6a00, #e85a00);
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 8px 25px rgba(255, 106, 0, 0.4);
+    }
+    
+    &:nth-child(2) { background: linear-gradient(135deg, #3b5998, #2d4373); }
+    &:nth-child(3) { background: linear-gradient(135deg, #1da1f2, #0d8bd9); }
+    &:nth-child(4) { background: linear-gradient(135deg, #0077b5, #005582); }
+    &:nth-child(5) { background: linear-gradient(135deg, #333, #24292e); }
+    &:nth-child(6) { background: linear-gradient(135deg, #7289da, #5b6eae); }
+    &:nth-child(7) { background: linear-gradient(135deg, #ff0000, #cc0000); }
+    
+    i {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.footer .account-section {
+  .auth-buttons {
+    .btn {
+      font-size: 0.9rem;
+      padding: 0.7rem 1.5rem;
+      border: 2px solid #ff6a00;
+      background: transparent;
+      color: #ff6a00;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: linear-gradient(135deg, #ff6a00, #e85a00);
+        border-color: #ff6a00;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 106, 0, 0.3);
+      }
+    }
+  }
+}
+
+.footer .footer-bottom {
+  background-color: rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(255, 106, 0, 0.3);
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left:calc(var(--bs-gutter-x) * 0.5);
+
+  margin-top: 2rem;
+  
+  .footer-copyright {
+    color: #bdc3c7;
+    font-size: 0.9rem;
+  }
+  
+  .footer-meta {
+    color: #95a5a6;
+    font-size: 0.85rem;
+    
+    .footer-version {
+      font-weight: 600;
+      color: #ff6a00;
+    }
+  }
+  
+  .footer-link-inline {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: #ff6a00;
+    }
+  }
+}
+
+
+/* ========================================
+   MOBILE RESPONSIVE LAYOUT (TABLET)
+======================================== */
+@media (max-width: 991px) {
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    min-height: auto;
+    padding: 15px;
+  }
+  
+  .main-content {
+    padding: 15px;
+  }
+  
+  .right-sidebar {
+    padding: 15px;
+  }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE LAYOUT (PHONE)
+======================================== */
+@media (max-width: 767px) {
+  /* Mobile layout order: Sidebar -> Main Content -> Right Sidebar */
+  .sidebar {
+    order: 1 !important;
+    background-color: #fff;
+    border-bottom: 2px solid #b8b8b8;
+    border-right: none;
+    padding: 10px;
+    min-height: auto;
+    
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      
+      .nav-item {
+        flex: 0 0 auto;
+        margin: 0.25rem;
+      }
+      
+      .nav-link {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+    }
+  }
+  
+  .main-content {
+    order: 2 !important;
+    padding: 15px;
+  }
+  
+  .right-sidebar {
+    order: 3 !important;
+    padding: 15px;
+  }
+  
+  /* Question list mobile adjustments */
+  .question-stats-col {
+    .stat-item {
+      margin-bottom: 4px;
+      
+      .stat-number, .stat-label {
+        font-size: 11px !important;
+      }
+    }
+    
+    .bounty-badge {
+      font-size: 10px !important;
+      padding: 2px 6px !important;
+    }
+  }
+  
+  .question-title {
+    font-size: 15px !important;
+  }
+  
+  .question-excerpt {
+    font-size: 12px !important;
+  }
+  
+  .filter-tabs {
+    .nav-pills .nav-link {
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+  }
+  
+  /* Footer mobile adjustments */
+  .footer {
+    .social-links {
+
+      margin-bottom: 2rem;
+      
+      .social-link {
+        width: 60px;
+        height: 60px;
+        margin: 0.2rem;
+      }
+    }
+    
+    .account-section {
+      text-align: center;
+      
+      .auth-buttons {
+        .btn {
+          display: block;
+          width: 100%;
+          margin-bottom: 0.8rem;
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    
+    .footer-bottom {
+    //   text-align: center;
+    //   width: 100%;
+      .col-md-6 {
+        text-align: center !important;
+        // margin-bottom: 1rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+
+@media (max-width: 575px) {
+  .footer {
+    .container-fluid {
+      padding: 0 !important;
+    }
+    
+    .footer-heading {
+      font-size: 1rem;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-link {
+      font-size: 0.9rem;
+    }
+    
+    .footer-brand {
+      font-size: 1.5rem;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+
+.comments-section {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  
+  .comment-item {
+    .comment-actions {
+      .btn {
+        padding: 0.1rem 0.3rem;
+        font-size: 0.75rem;
+        border: none;
+        
+        &:hover {
+          background-color: #e9ecef;
+        }
+      }
+      
+      .vote-count {
+        font-weight: 600;
+        color: #495057;
+      }
+      
+      .reply-btn {
+        color: #0066cc;
+        
+        &:hover {
+          background-color: #e3f2fd;
+        }
+      }
+    }
+    
+    .nested-comment {
+      background-color: #ffffff;
+      border-radius: 4px;
+      padding: 0.5rem;
+      
+      .comment-actions {
+        .btn {
+          padding: 0.05rem 0.2rem;
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+
+
+/* Avatar base styles */
+.avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40px; /* Prevents the avatar from shrinking below this width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Smaller avatars in nested comments */
+.nested-comment .avatar {
+  width: 28px;
+  height: 28px;
+  font-size: 0.9rem;
+  min-width: 28px;
+}
+
+/* Even smaller avatars for deeper nested comments */
+.nested-comment .nested-comment .avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+  min-width: 24px;
+}
+
+/* Make avatars in comments smaller on mobile */
+@media (max-width: 576px) {
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    min-width: 32px;
+  }
+  
+  .nested-comment .avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+    min-width: 24px;
+  }
+}

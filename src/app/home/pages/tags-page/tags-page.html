@@ -1,0 +1,50 @@
+<app-layout>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-0">Tags</h1>
+      <p class="text-muted">Browse all available tags</p>
+    </div>
+    <div class="filter-section">
+
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (tags.length > 0) {
+    <div class="tags-container">
+      <div class="row">
+        @for (tag of tags; track tag.name) {
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card tag-card h-100">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a [routerLink]="['/questions/', tag.name]" class="tag-link">
+                    <span class="badge bg-info text-dark">{{ tag.name }}</span>
+                  </a>
+                  <p> Questions tagged with {{tag.name}}</p>
+                </h5>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="text-center py-5">
+            <p>No tags found at the moment.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</app-layout>
