@@ -4,8 +4,8 @@
     <app-sidenav class="col-lg-2 col-md-3 col-12 order-first"></app-sidenav>
 
    
-    <main class="col-lg-7 col-md-9 col-12 order-second main-content">
-      <!--  Header -->
+    <main class="col-lg-7 col-md-9 col-12 my-4 order-second main-content">
+      
         
       <div class="question-header mb-4">
 
@@ -40,16 +40,22 @@
         <div class="row">
           
           <div class="col-md-1 vote-section text-center">
-            <button class="btn btn-outline-secondary btn-sm mb-2">
+            <button 
+              class="btn btn-outline-secondary btn-sm mb-2"
+              (click)="upvoteQuestion()"
+              [disabled]="isVoting"
+              title="Upvote this question">
               <i class="fas fa-chevron-up"></i>
             </button>
             <div class="vote-count fw-bold">{{question.numberOfVotes}}</div>
-            <button class="btn btn-outline-secondary btn-sm mt-2">
+            <button 
+              class="btn btn-outline-secondary btn-sm mt-2"
+              (click)="downvoteQuestion()"
+              [disabled]="isVoting"
+              title="Downvote this question">
               <i class="fas fa-chevron-down"></i>
             </button>
-            <button class="btn btn-outline-warning btn-sm mt-3">
-              <i class="fas fa-bookmark"></i>
-            </button>
+            
           </div>
 
           <!-- Question Content -->
@@ -79,26 +85,8 @@
 
             
            
-            <div class="question-actions d-flex justify-content-between align-items-center">
-              <div class="action-buttons">
-                <!-- <button class="btn btn-sm btn-outline-secondary me-2">
-                  <i class="fas fa-share me-1"></i>Share
-                </button>
-                <button class="btn btn-sm btn-outline-secondary me-2">
-                  <i class="fas fa-flag me-1"></i>Flag
-                </button> -->
-                <button class="btn btn-sm btn-outline-primary reply-btn" #replyBtn1 (click)="toggleReplyForm(replyBtn1)">
-                  <i class="fas fa-reply me-1"></i>Comment
-                </button>
-              </div>
-               <!-- Reply Form for Answer (initially hidden) -->
-              <div class="reply-form mb-3" style="display: none;">
-                <textarea class="form-control mb-2" rows="2" placeholder="Add your comment..."></textarea>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-sm btn-primary">Post Comment</button>
-                  <button class="btn btn-sm btn-secondary" onclick="toggleReplyForm(this)">Cancel</button>
-                </div>
-              </div>
+            <div class="question-actions d-flex justify-content-end align-items-center">
+             
 
               
               <div class="author-info text-end">
@@ -129,17 +117,8 @@
       <app-comments [qu-id]="question.userId"></app-comments>
 
 
-      <div class="add-comment my-3">
-        <h4 class="section-title mb-3">Your Comment on the Question</h4>
-        <textarea class="form-control mb-2" rows="6" placeholder="Add a comment..."></textarea>
-        <button class="btn btn-sm btn-primary">Add Comment</button>
-      </div>
-      <!-- Write Answer Section -->
-      <div class="write-answer-section">
-        <h4 class="section-title mb-3">Your Answer on the Question</h4>
-        <textarea class="form-control mb-3" rows="6" placeholder="Share your experience or advice about work-life balance..."></textarea>
-        <button class="btn btn-primary">Post Your Answer</button>
-      </div>
+      
+      
     </main>
 
 
@@ -161,8 +140,9 @@
 
     <!-- ASIDE  -->
     <aside class="col-lg-3 col-12 order-third right-sidebar">
-      <!-- Question Stats -->
-      <div class="sidebar-section mb-4">
+
+      
+      <div class="sidebar-section my-4">
         <h5 class="sidebar-title bg-primary text-white p-2 mb-0">Question Stats</h5>
         <div class="sidebar-content p-3 border">
           <div class="stat-item mb-2">
@@ -185,62 +165,22 @@
           </div>
         </div>
       </div>
-
-      <!-- Related Questions -->
-      <div class="sidebar-section mb-4">
-        <h5 class="sidebar-title bg-info text-white p-2 mb-0">Related Questions</h5>
-        <div class="sidebar-content p-3 border">
-          <div class="related-item mb-3">
-            <a href="#" class="text-decoration-none">
-              <div class="d-flex">
-                <span class="badge bg-secondary me-2">12</span>
-                <span class="small">How to set boundaries with colleagues when working remotely?</span>
-              </div>
-            </a>
-          </div>
-          <div class="related-item mb-3">
-            <a href="#" class="text-decoration-none">
-              <div class="d-flex">
-                <span class="badge bg-success me-2">8</span>
-                <span class="small">Best home office setup for productivity and comfort</span>
-              </div>
-            </a>
-          </div>
-          <div class="related-item mb-3">
-            <a href="#" class="text-decoration-none">
-              <div class="d-flex">
-                <span class="badge bg-warning me-2">15</span>
-                <span class="small">Managing remote work stress and burnout</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hot Network Questions -->
-      <!-- <div class="sidebar-section">
-        <h5 class="sidebar-title bg-warning text-dark p-2 mb-0">Hot Network Questions</h5>
-        <div class="sidebar-content p-3 border">
-          <div class="hot-question mb-2">
-            <a href="#" class="text-decoration-none small">
-              <i class="fas fa-fire text-danger me-1"></i>
-              Effective time management techniques for remote workers
-            </a>
-          </div>
-          <div class="hot-question mb-2">
-            <a href="#" class="text-decoration-none small">
-              <i class="fas fa-fire text-danger me-1"></i>
-              How to maintain team communication while working from home
-            </a>
-          </div>
-          <div class="hot-question mb-2">
-            <a href="#" class="text-decoration-none small">
-              <i class="fas fa-fire text-danger me-1"></i>
-              Digital wellness: managing screen time and digital fatigue
-            </a>
-          </div>
-        </div>
-      </div> -->
+      
+      
+      <div class="sidebar-section my-4">
+       <div class="ad-placeholder bg-light border rounded text-center py-5" style="min-height: 400px;">
+         <div class="d-flex flex-column justify-content-center align-items-center h-100">
+           <i class="fas fa-ad text-muted mb-3" style="font-size: 3rem;"></i>
+           <h4 class="text-muted mb-2">Your Ad Goes Here</h4>
+           <p class="text-muted small">
+             Advertisement space available<br>
+             Contact us for pricing
+           </p>
+         </div>
+       </div>
+     </div>
+      
+      
     </aside>
   </div>
 </div>

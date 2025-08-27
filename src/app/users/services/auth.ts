@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from '../interface/user';
 
 interface LoginResponse {
   token: string;
-  user: any; 
+  user: User; 
 }
 
 @Injectable({
@@ -60,7 +61,7 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  getCurrentUser(): any {
+  getCurrentUser(): User | null {
     const userStr = localStorage.getItem(this.userKey);
     console.log('Current user:', userStr);
     return userStr ? JSON.parse(userStr) : null;
@@ -72,6 +73,11 @@ export class AuthService {
 
   isLoggedIn$(): Observable<boolean> {
     return this.isLoggedInSubject.asObservable();
+  }
+
+  updateCurrentUser(updatedUser: User): void {
+    localStorage.setItem(this.userKey, JSON.stringify(updatedUser));
+    console.log('Current user updated:', updatedUser);
   }
 
   private setSession(authResult: LoginResponse): void {

@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../users/services/auth';
 import { SharedModule } from '../../shared/shared-module';
+import { User } from '../../users/interface/user';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,7 +14,7 @@ import { SharedModule } from '../../shared/shared-module';
 })
 export class Sidenav implements OnInit {
   isLoggedIn = false;
-  currentUser: any = null;
+  currentUser: User | null = null;
 
   constructor(
     private router: Router,

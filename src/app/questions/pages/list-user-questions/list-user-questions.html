@@ -10,7 +10,7 @@
         </div>
 
         <div class="question-stats mb-3">
-          <span class="text-muted">{{ questions.length }} question(s) found</span>
+          <span class="text-muted">{{ questions.length ? questions.length : 0 }} question(s) found</span>
         </div>
 
         @if (isLoading) {
@@ -21,17 +21,7 @@
           </div>
         }
 
-        <!-- Questions List -->
-        @if(questions.length == 0 && !isLoading) {
-          <div class="text-center py-5">
-            <div class="mb-3">
-              <i class="fas fa-question-circle fa-3x text-muted"></i>
-            </div>
-            <h4>No questions found</h4>
-            <p class="text-muted">You haven't asked any questions yet.</p>
-            <a class="btn btn-primary" routerLink="/ask-question">Ask Your First Question</a>
-          </div>
-        }
+    
 
         @if(questions.length > 0) {
           <div class="questions-container">
@@ -67,7 +57,7 @@
                     
                     <!-- Action Buttons -->
                     <div class="col-md-4">
-                      @if (canEditOrDelete(question)) {
+                     
                         <div class="d-flex flex-column gap-2 h-100 justify-content-center">
                           <button 
                             class="btn btn-outline-primary btn-sm"
@@ -91,12 +81,22 @@
                           </button>
                         </div>
                         
-                      }
+                      
                     </div>
                   </div>
                 </div>
               </div>
             }
+          </div>
+        }
+        @else {
+          <div class="text-center py-5">
+            <div class="mb-3">
+              <i class="fas fa-question-circle fa-3x text-muted"></i>
+            </div>
+            <h4>No questions found</h4>
+            <p class="text-muted">You haven't asked any questions yet.</p>
+            <a class="btn btn-primary" routerLink="/ask-question">Ask Your First Question</a>
           </div>
         }
       </div>

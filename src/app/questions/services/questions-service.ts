@@ -80,7 +80,7 @@ export class QuestionsService {
     tags: string[];
   }): Observable<any> {
     const path = `http://localhost:8000/api/questions/${questionId}`;
-    console.log('Updating question:', questionId, questionData);
+    console.log('Updating question:', questionId, questionData); 
     return this.http.put(path, questionData);
   }
 
@@ -94,5 +94,38 @@ export class QuestionsService {
     const path = `http://localhost:8000/api/questions/${questionId}`;
     console.log('Deleting question:', questionId);
     return this.http.delete(path);
+  }
+
+
+
+
+  postComment(
+    comment: string, 
+    questionId: string, 
+    parentId: string | null = null, 
+    type: 'comment' | 'answer' = 'comment'
+  ): Observable<any> {
+    const path = `http://localhost:8000/api/questions/${questionId}/comments`;
+    return this.http.post(path, { 
+      comment: comment, 
+      parent_id: parentId,
+      type: type
+    });
+  }
+
+  /**
+   * Vote on a question
+   */
+  voteOnQuestion(questionId: string, voteType: 'upvote' | 'downvote'): Observable<any> {
+    const path = `http://localhost:8000/api/questions/${questionId}/vote`;
+    return this.http.post(path, { vote_type: voteType });
+  }
+
+  /**
+   * Vote on a comment/answer
+   */
+  voteOnComment(commentId: number, voteType: 'upvote' | 'downvote'): Observable<any> {
+    const path = `http://localhost:8000/api/comments/${commentId}/vote`;
+    return this.http.post(path, { vote_type: voteType });
   }
 }

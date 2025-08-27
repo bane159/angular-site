@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { QuestionsService } from '../../questions/services/questions-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentUtilsService {
 
-  constructor() {}
+  constructor(
+    private questionsService: QuestionsService,
+    private route: ActivatedRoute
+  ) {}
 
   /**
    * Toggles the visibility of a reply form
@@ -45,7 +50,34 @@ export class CommentUtilsService {
 
 
 
-  public postComment(comment: string, parentId?: string, userId?: string): void {
+  public postComment(
+    comment: string, 
+    parentId: string | null = null, 
+    type: 'comment' | 'answer' = 'comment'
+  ): void {
     console.log('Post comment:', comment);
+    
+    const questionId = this.route.snapshot.params['id'];
+    
+    if (!questionId) {
+      console.error('No question ID found');
+      return;
+    }
+
+    if (!comment.trim()) {
+      console.error('Comment content is required');
+      return;
+    }
+
+    this.questionsService.postComment(comment, questionId, parentId, type).subscribe({
+      next: (response) => {
+        console.log('Comment posted successfully:', response);
+        // You might want to emit an event or return an observable here
+        // to notify the components to refresh their data
+      },
+      error: (error) => {
+        console.error('Error posting comment:', error);
+      }
+    });
   }
 }

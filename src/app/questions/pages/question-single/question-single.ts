@@ -30,6 +30,7 @@ export class QuestionSingle {
   protected reputation: string | null = null;
   private userId: string | null = null;
   protected isLoading: boolean = true;
+  protected isVoting: boolean = false;
 
   constructor(private route: ActivatedRoute, private questionService: QuestionsService, private userService: UserService) {
     this.route.paramMap.subscribe((params) => {
@@ -96,5 +97,51 @@ export class QuestionSingle {
     }
   }
 
+
+  public postComment(comment: string, parent: string): void {
+   this.questionService.postComment(comment, this.question.id.toString(), parent).subscribe({
+     next: (response) => {
+       console.log(response);
+     },
+     error: (error) => {
+       console.error(error);
+     }
+   });
+  }
+
+  // Voting methods for questions
+  public upvoteQuestion(): void {
+    if (this.isVoting || !this.id) return;
+    
+    this.isVoting = true;
+    this.questionService.voteOnQuestion(this.id, 'upvote').subscribe({
+      next: (response) => {
+        console.log('Question upvote successful:', response);
+        this.question.numberOfVotes = response.current_votes;
+        this.isVoting = false;
+      },
+      error: (error) => {
+        console.error('Error upvoting question:', error);
+        this.isVoting = false;
+      }
+    });
+  }
+
+  public downvoteQuestion(): void {
+    if (this.isVoting || !this.id) return;
+    
+    this.isVoting = true;
+    this.questionService.voteOnQuestion(this.id, 'downvote').subscribe({
+      next: (response) => {
+        console.log('Question downvote successful:', response);
+        this.question.numberOfVotes = response.current_votes;
+        this.isVoting = false;
+      },
+      error: (error) => {
+        console.error('Error downvoting question:', error);
+        this.isVoting = false;
+      }
+    });
+  }
 
 }

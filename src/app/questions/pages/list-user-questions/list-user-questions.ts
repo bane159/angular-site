@@ -6,6 +6,7 @@ import { Layout } from "../../../shared/components/layout/layout";
 import { QuestionsService } from '../../services/questions-service';
 import { AuthService } from '../../../users/services/auth';
 import { IQuestionHome } from '../../interfaces/iquestion';
+import { User } from '../../../users/interface/user';
 
 @Component({
   selector: 'app-list-user-questions',
@@ -18,7 +19,7 @@ export class ListUserQuestions implements OnInit {
   questions: IQuestionHome[] = [];
   isLoading = false;
   isDeleting = false;
-  currentUser: any = null;
+  currentUser: User | null = null;
   userId: number | null = null;
 
   constructor(
@@ -30,10 +31,11 @@ export class ListUserQuestions implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    console.log(this.currentUser.id);
-    this.userId = this.authService.getCurrentUser().id;
-
-    this.loadUserQuestions();
+    if (this.currentUser) {
+      console.log(this.currentUser.id);
+      this.userId = this.currentUser.id;
+      this.loadUserQuestions();
+    }
   }
 
   loadUserQuestions(): void {
@@ -53,7 +55,7 @@ export class ListUserQuestions implements OnInit {
 
   canEditOrDelete(question: IQuestionHome): boolean {
     return this.authService.isLoggedIn() && 
-           this.currentUser ;
+           this.currentUser !== null;
   }
 
   editQuestion(questionId: number): void {

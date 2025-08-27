@@ -1,7 +1,7 @@
 <footer class="footer bg-dark text-light">
   <div class="container-fluid">
     <div class="row py-4">
-      <!-- Logo   -->
+
       <div class="col-lg-3 col-md-6 mb-4">
         <h5 class="footer-brand">
           <span style="color: #ff6a00; font-weight: 800;">Bitter!</span>
@@ -12,7 +12,7 @@
        
       </div>
       <div class="col-lg-3 col-md-6 mb-4">
-         <!-- Social Media  -->
+        
         <div class="social-links">
           <h6 class="footer-heading">Follow Us</h6>
           <div class="">
@@ -50,7 +50,19 @@
         <div class="account-section mb-3">
 
 
-          <!-- Login/Logout Section -->
+          @if(isLoggedIn()){
+           <div class="auth-buttons mb-3">
+            <a class="btn btn-outline-light btn-sm me-2" type="button" [routerLink]="['/profile']">
+              <i class="fas fa-user me-1"></i>Profile
+            </a>
+            <a class="btn btn-outline-light btn-sm" type="button" [routerLink]="['/my-questions']">
+              <i class="fas fa-question me-1"></i>Questions
+            </a>
+            <button class="btn btn-outline-light btn-sm" type="button" (click)="logout()">
+              <i class="fas fa-sign-out-alt me-1"></i>Log out
+            </button>
+          </div>
+          } @else {
           <div class="auth-buttons mb-3">
             <a class="btn btn-outline-light btn-sm me-2" type="button" [routerLink]="['/login']">
               <i class="fas fa-sign-in-alt me-1"></i>Log in
@@ -59,7 +71,7 @@
               <i class="fas fa-user-plus me-1"></i>Sign up
             </a>
           </div>
-          
+        }
 
 
           

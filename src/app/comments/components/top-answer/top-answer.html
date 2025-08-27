@@ -19,11 +19,19 @@
   <div class="answer-item top-answer mb-4 border border-success rounded">
     <div class="row">
       <div class="col-md-1 vote-section text-center">
-        <button class="btn btn-outline-secondary btn-sm mb-2">
+        <button 
+          class="btn btn-outline-secondary btn-sm mb-2"
+          (click)="upvoteComment(topComment.id)"
+          [disabled]="isVoting"
+          title="Upvote this answer">
           <i class="fas fa-chevron-up"></i>
         </button>
         <div class="vote-count fw-bold text-success">{{ topComment && topComment.votes }}</div>
-        <button class="btn btn-outline-secondary btn-sm mt-2">
+        <button 
+          class="btn btn-outline-secondary btn-sm mt-2"
+          (click)="downvoteComment(topComment.id)"
+          [disabled]="isVoting"
+          title="Downvote this answer">
           <i class="fas fa-chevron-down"></i>
         </button>
         <div class="accepted-answer mt-2">
@@ -85,11 +93,19 @@
                   
                   <!-- Comment Actions -->
                   <div class="comment-actions mt-1">
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+                    <button 
+                      class="btn btn-sm btn-outline-secondary me-1" 
+                      title="Upvote"
+                      (click)="upvoteComment(comment.id)"
+                      [disabled]="isVoting">
                       <i class="fas fa-chevron-up"></i>
                     </button>
                     <span class="vote-count small me-1">{{ comment.votes }}</span>
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+                    <button 
+                      class="btn btn-sm btn-outline-secondary me-1" 
+                      title="Downvote"
+                      (click)="downvoteComment(comment.id)"
+                      [disabled]="isVoting">
                       <i class="fas fa-chevron-down"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
@@ -99,11 +115,32 @@
 
                   <!-- Reply Form (hidden) -->
                   <div class="reply-form mt-2" style="display: none;">
-                    <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-primary">Post Reply</button>
-                      <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
-                    </div>
+                    <form [formGroup]="getReplyForm(comment.id)" (ngSubmit)="onSubmitReply(comment.id)">
+                      <textarea 
+                        class="form-control mb-2" 
+                        rows="2" 
+                        placeholder="Write a reply..."
+                        formControlName="content"
+                        [class.is-invalid]="getReplyForm(comment.id).get('content')?.invalid && getReplyForm(comment.id).get('content')?.touched">
+                      </textarea>
+                      @if (getReplyForm(comment.id).get('content')?.invalid && getReplyForm(comment.id).get('content')?.touched) {
+                        <div class="invalid-feedback">
+                          Reply content is required.
+                        </div>
+                      }
+                      <div class="d-flex gap-2">
+                        <button 
+                          type="submit" 
+                          class="btn btn-sm btn-primary"
+                          [disabled]="getReplyForm(comment.id).invalid || isSubmitting">
+                          @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                          }
+                          Post Reply
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary cancel-reply" (click)="toggleReplyForm($event)">Cancel</button>
+                      </div>
+                    </form>
                   </div>
                   
                   <!-- Nested Comments recursive template -->
@@ -121,8 +158,29 @@
           }
           
           <div class="add-comment mt-3">
-            <textarea class="form-control mb-2" rows="2" placeholder="Add a comment to this answer..."></textarea>
-            <button class="btn btn-sm btn-primary">Add Comment</button>
+            <form [formGroup]="getReplyForm(topComment.id)" (ngSubmit)="onSubmitReply(topComment.id)">
+              <textarea 
+                class="form-control mb-2" 
+                rows="2" 
+                placeholder="Add a comment to this answer..."
+                formControlName="content"
+                [class.is-invalid]="getReplyForm(topComment.id).get('content')?.invalid && getReplyForm(topComment.id).get('content')?.touched">
+              </textarea>
+              @if (getReplyForm(topComment.id).get('content')?.invalid && getReplyForm(topComment.id).get('content')?.touched) {
+                <div class="invalid-feedback">
+                  Comment content is required.
+                </div>
+              }
+              <button 
+                type="submit" 
+                class="btn btn-sm btn-primary"
+                [disabled]="getReplyForm(topComment.id).invalid || isSubmitting">
+                @if (isSubmitting) {
+                  <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                }
+                Add Comment
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -156,11 +214,19 @@
     <div class="answer-item smaller-answer mb-3 p-3 border rounded">
       <div class="row">
         <div class="col-md-1 vote-section text-center">
-          <button class="btn btn-outline-secondary btn-sm mb-1">
+          <button 
+            class="btn btn-outline-secondary btn-sm mb-1"
+            (click)="upvoteComment(answer.id)"
+            [disabled]="isVoting"
+            title="Upvote this answer">
             <i class="fas fa-chevron-up"></i>
           </button>
           <div class="vote-count fw-bold">{{ answer.votes }}</div>
-          <button class="btn btn-outline-secondary btn-sm mt-1">
+          <button 
+            class="btn btn-outline-secondary btn-sm mt-1"
+            (click)="downvoteComment(answer.id)"
+            [disabled]="isVoting"
+            title="Downvote this answer">
             <i class="fas fa-chevron-down"></i>
           </button>
         </div>
@@ -170,15 +236,8 @@
             <p class="mb-2">{{ answer.comment }}</p>
           </div>
           
-          <div class="answer-actions d-flex justify-content-between align-items-center mb-2">
-            <div class="action-buttons">
-              <button class="btn btn-sm btn-outline-secondary me-2">
-                <i class="fas fa-thumbs-up me-1"></i>Helpful
-              </button>
-              <button class="btn btn-sm btn-outline-primary reply-btn" (click)="toggleReplyForm($event)">
-                <i class="fas fa-reply me-1"></i>Comment
-              </button>
-            </div>
+          <div class="answer-actions d-flex justify-content-end align-items-center mb-2">
+            
             
             <div class="author-info text-end">
               <div class="author-card p-1 bg-light rounded">
@@ -198,11 +257,32 @@
 
           <!-- Reply Form (hidden) -->
           <div class="reply-form mb-2" style="display: none;">
-            <textarea class="form-control mb-2" rows="2" placeholder="Add your comment..."></textarea>
-            <div class="d-flex gap-2">
-              <button class="btn btn-sm btn-primary">Post Comment</button>
-              <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
-            </div>
+            <form [formGroup]="getReplyForm(answer.id)" (ngSubmit)="onSubmitReply(answer.id)">
+              <textarea 
+                class="form-control mb-2" 
+                rows="2" 
+                placeholder="Add your comment..."
+                formControlName="content"
+                [class.is-invalid]="getReplyForm(answer.id).get('content')?.invalid && getReplyForm(answer.id).get('content')?.touched">
+              </textarea>
+              @if (getReplyForm(answer.id).get('content')?.invalid && getReplyForm(answer.id).get('content')?.touched) {
+                <div class="invalid-feedback">
+                  Comment content is required.
+                </div>
+              }
+              <div class="d-flex gap-2">
+                <button 
+                  type="submit" 
+                  class="btn btn-sm btn-primary"
+                  [disabled]="getReplyForm(answer.id).invalid || isSubmitting">
+                  @if (isSubmitting) {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                  }
+                  Post Comment
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary cancel-reply" (click)="toggleReplyForm($event)">Cancel</button>
+              </div>
+            </form>
           </div>
 
           
@@ -221,11 +301,19 @@
                       
                       <!-- Comment Actions -->
                       <div class="comment-actions mt-1">
-                        <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+                        <button 
+                          class="btn btn-sm btn-outline-secondary me-1" 
+                          title="Upvote"
+                          (click)="upvoteComment(reply.id)"
+                          [disabled]="isVoting">
                           <i class="fas fa-chevron-up"></i>
                         </button>
                         <span class="vote-count small me-1">{{ reply.votes }}</span>
-                        <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+                        <button 
+                          class="btn btn-sm btn-outline-secondary me-1" 
+                          title="Downvote"
+                          (click)="downvoteComment(reply.id)"
+                          [disabled]="isVoting">
                           <i class="fas fa-chevron-down"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
@@ -235,11 +323,32 @@
 
                       <!-- Reply Form (hidden) -->
                       <div class="reply-form mt-2" style="display: none;">
-                        <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
-                        <div class="d-flex gap-2">
-                          <button class="btn btn-sm btn-primary">Post Reply</button>
-                          <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
-                        </div>
+                        <form [formGroup]="getReplyForm(reply.id)" (ngSubmit)="onSubmitReply(reply.id)">
+                          <textarea 
+                            class="form-control mb-2" 
+                            rows="2" 
+                            placeholder="Write a reply..."
+                            formControlName="content"
+                            [class.is-invalid]="getReplyForm(reply.id).get('content')?.invalid && getReplyForm(reply.id).get('content')?.touched">
+                          </textarea>
+                          @if (getReplyForm(reply.id).get('content')?.invalid && getReplyForm(reply.id).get('content')?.touched) {
+                            <div class="invalid-feedback">
+                              Reply content is required.
+                            </div>
+                          }
+                          <div class="d-flex gap-2">
+                            <button 
+                              type="submit" 
+                              class="btn btn-sm btn-primary"
+                              [disabled]="getReplyForm(reply.id).invalid || isSubmitting">
+                              @if (isSubmitting) {
+                                <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                              }
+                              Post Reply
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary cancel-reply" (click)="toggleReplyForm($event)">Cancel</button>
+                          </div>
+                        </form>
                       </div>
                       
                       <!-- Nested replies recursive  -->
@@ -258,8 +367,29 @@
             }
             
             <div class="add-comment mt-2">
-              <textarea class="form-control mb-2" rows="2" placeholder="Add a comment to this answer..."></textarea>
-              <button class="btn btn-sm btn-primary">Add Comment</button>
+              <form [formGroup]="getReplyForm(answer.id)" (ngSubmit)="onSubmitReply(answer.id)">
+                <textarea 
+                  class="form-control mb-2" 
+                  rows="2" 
+                  placeholder="Add a comment to this answer..."
+                  formControlName="content"
+                  [class.is-invalid]="getReplyForm(answer.id).get('content')?.invalid && getReplyForm(answer.id).get('content')?.touched">
+                </textarea>
+                @if (getReplyForm(answer.id).get('content')?.invalid && getReplyForm(answer.id).get('content')?.touched) {
+                  <div class="invalid-feedback">
+                    Comment content is required.
+                  </div>
+                }
+                <button 
+                  type="submit" 
+                  class="btn btn-sm btn-primary"
+                  [disabled]="getReplyForm(answer.id).invalid || isSubmitting">
+                  @if (isSubmitting) {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                  }
+                  Add Comment
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -276,6 +406,36 @@
     @else {
       <h4 class="text-center text-muted my-4">There is no answers for this question</h4>
     }
+
+    <!-- New Answer Form -->
+    <div class="new-answer-form mt-4">
+      <h5>Your Answer</h5>
+      <form [formGroup]="answerForm" (ngSubmit)="onSubmitAnswer()">
+        <div class="mb-3">
+          <textarea 
+            class="form-control" 
+            rows="6" 
+            placeholder="Write your answer here..."
+            formControlName="content"
+            [class.is-invalid]="answerForm.get('content')?.invalid && answerForm.get('content')?.touched">
+          </textarea>
+          @if (answerForm.get('content')?.invalid && answerForm.get('content')?.touched) {
+            <div class="invalid-feedback">
+              Answer content is required.
+            </div>
+          }
+        </div>
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="answerForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+          }
+          Post Your Answer
+        </button>
+      </form>
+    </div>
   
 </div>
 
@@ -293,11 +453,19 @@
           
           
           <div class="comment-actions mt-1">
-            <button class="btn btn-sm btn-outline-secondary me-1" title="Upvote">
+            <button 
+              class="btn btn-sm btn-outline-secondary me-1" 
+              title="Upvote"
+              (click)="upvoteComment(deepReply.id)"
+              [disabled]="isVoting">
               <i class="fas fa-chevron-up"></i>
             </button>
             <span class="vote-count small me-1">{{ deepReply.votes }}</span>
-            <button class="btn btn-sm btn-outline-secondary me-1" title="Downvote">
+            <button 
+              class="btn btn-sm btn-outline-secondary me-1" 
+              title="Downvote"
+              (click)="downvoteComment(deepReply.id)"
+              [disabled]="isVoting">
               <i class="fas fa-chevron-down"></i>
             </button>
             <button class="btn btn-sm btn-outline-primary reply-btn" title="Reply" (click)="toggleReplyForm($event)">
@@ -307,11 +475,32 @@
 
           <!-- Reply Form (hidden) -->
           <div class="reply-form mt-2" style="display: none;">
-            <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
-            <div class="d-flex gap-2">
-              <button class="btn btn-sm btn-primary">Post Reply</button>
-              <button class="btn btn-sm btn-secondary" (click)="toggleReplyForm($event)">Cancel</button>
-            </div>
+            <form [formGroup]="getReplyForm(deepReply.id)" (ngSubmit)="onSubmitReply(deepReply.id)">
+              <textarea 
+                class="form-control mb-2" 
+                rows="2" 
+                placeholder="Write a reply..."
+                formControlName="content"
+                [class.is-invalid]="getReplyForm(deepReply.id).get('content')?.invalid && getReplyForm(deepReply.id).get('content')?.touched">
+              </textarea>
+              @if (getReplyForm(deepReply.id).get('content')?.invalid && getReplyForm(deepReply.id).get('content')?.touched) {
+                <div class="invalid-feedback">
+                  Reply content is required.
+                </div>
+              }
+              <div class="d-flex gap-2">
+                <button 
+                  type="submit" 
+                  class="btn btn-sm btn-primary"
+                  [disabled]="getReplyForm(deepReply.id).invalid || isSubmitting">
+                  @if (isSubmitting) {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                  }
+                  Post Reply
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary cancel-reply" (click)="toggleReplyForm($event)">Cancel</button>
+              </div>
+            </form>
           </div>
           
          

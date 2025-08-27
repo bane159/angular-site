@@ -1,0 +1,231 @@
+<app-layout>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h2 class="text-center mb-0">
+              <i class="fas fa-user-cog me-2"></i>User Profile Settings
+            </h2>
+          </div>
+          <div class="card-body p-4">
+            
+            <!-- Password Change Section -->
+            <div class="row mb-5">
+              <div class="col-12">
+                <h4 class="border-bottom pb-2 mb-4">
+                  <i class="fas fa-lock me-2"></i>Change Password
+                </h4>
+                
+                @if (passwordError) {
+                  <div class="alert alert-danger">{{ passwordError }}</div>
+                }
+                @if (passwordSuccess) {
+                  <div class="alert alert-success">{{ passwordSuccess }}</div>
+                }
+                
+                <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Current Password *</label>
+                        <input 
+                          type="password" 
+                          class="form-control" 
+                          id="oldPassword" 
+                          formControlName="oldPassword"
+                          [class.is-invalid]="isFieldInvalid('oldPassword', 'password')"
+                          placeholder="Enter your current password"
+                        >
+                        @if (isFieldInvalid('oldPassword', 'password')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('oldPassword', 'password') }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password *</label>
+                        <input 
+                          type="password" 
+                          class="form-control" 
+                          id="newPassword" 
+                          formControlName="newPassword"
+                          [class.is-invalid]="isFieldInvalid('newPassword', 'password')"
+                          placeholder="Enter your new password"
+                        >
+                        @if (isFieldInvalid('newPassword', 'password')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('newPassword', 'password') }}
+                          </div>
+                        }
+                        <div class="form-text">
+                          Password must be at least 8 characters long
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary"
+                      [disabled]="passwordForm.invalid || isSubmittingPassword"
+                    >
+                      @if (isSubmittingPassword) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                      }
+                      <i class="fas fa-save me-2"></i>Update Password
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Personal Information Section -->
+            <div class="row mb-5">
+              <div class="col-12">
+                <h4 class="border-bottom pb-2 mb-4">
+                  <i class="fas fa-user me-2"></i>Personal Information
+                </h4>
+                
+                @if (personalError) {
+                  <div class="alert alert-danger">{{ personalError }}</div>
+                }
+                @if (personalSuccess) {
+                  <div class="alert alert-success">{{ personalSuccess }}</div>
+                }
+                
+                <form [formGroup]="personalForm" (ngSubmit)="updatePersonalInfo()">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name *</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          id="firstName" 
+                          formControlName="firstName"
+                          [class.is-invalid]="isFieldInvalid('firstName', 'personal')"
+                          placeholder="Enter your first name"
+                        >
+                        @if (isFieldInvalid('firstName', 'personal')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('firstName', 'personal') }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name *</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          id="lastName" 
+                          formControlName="lastName"
+                          [class.is-invalid]="isFieldInvalid('lastName', 'personal')"
+                          placeholder="Enter your last name"
+                        >
+                        @if (isFieldInvalid('lastName', 'personal')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('lastName', 'personal') }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button 
+                      type="submit" 
+                      class="btn btn-success"
+                      [disabled]="personalForm.invalid || isSubmittingPersonal"
+                    >
+                      @if (isSubmittingPersonal) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                      }
+                      <i class="fas fa-save me-2"></i>Update Personal Info
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Account Information Section -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h4 class="border-bottom pb-2 mb-4">
+                  <i class="fas fa-envelope me-2"></i>Account Information
+                </h4>
+                
+                @if (accountError) {
+                  <div class="alert alert-danger">{{ accountError }}</div>
+                }
+                @if (accountSuccess) {
+                  <div class="alert alert-success">{{ accountSuccess }}</div>
+                }
+                
+                <form [formGroup]="accountForm" (ngSubmit)="updateAccountInfo()">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="username" class="form-label">Username *</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          id="username" 
+                          formControlName="username"
+                          [class.is-invalid]="isFieldInvalid('username', 'account')"
+                          placeholder="Enter your username"
+                        >
+                        @if (isFieldInvalid('username', 'account')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('username', 'account') }}
+                          </div>
+                        }
+                        <div class="form-text">
+                          Username must be unique and at least 3 characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input 
+                          type="email" 
+                          class="form-control" 
+                          id="email" 
+                          formControlName="email"
+                          [class.is-invalid]="isFieldInvalid('email', 'account')"
+                          placeholder="Enter your email address"
+                        >
+                        @if (isFieldInvalid('email', 'account')) {
+                          <div class="invalid-feedback">
+                            {{ getFieldError('email', 'account') }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button 
+                      type="submit" 
+                      class="btn btn-warning"
+                      [disabled]="accountForm.invalid || isSubmittingAccount"
+                    >
+                      @if (isSubmittingAccount) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                      }
+                      <i class="fas fa-save me-2"></i>Update Account Info
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>
