@@ -4,8 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CommentsService } from '../../services/comments-service';
 import { CommentUtilsService } from '../../services/comment-utils.service';
 import { QuestionsService } from '../../../questions/services/questions-service';
-import { TopComment } from '../../interfaces/top-comment';
-import { Answer } from '../../interfaces/all-answers';
+import { TopComment, Answer } from '../../interfaces/comment';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

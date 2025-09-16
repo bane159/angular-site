@@ -113,17 +113,13 @@ export class QuestionsService {
     });
   }
 
-  /**
-   * Vote on a question
-   */
+
   voteOnQuestion(questionId: string, voteType: 'upvote' | 'downvote'): Observable<any> {
     const path = `http://localhost:8000/api/questions/${questionId}/vote`;
     return this.http.post(path, { vote_type: voteType });
   }
 
-  /**
-   * Vote on a comment/answer
-   */
+
   voteOnComment(commentId: number, voteType: 'upvote' | 'downvote'): Observable<any> {
     const path = `http://localhost:8000/api/comments/${commentId}/vote`;
     return this.http.post(path, { vote_type: voteType });

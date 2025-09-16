@@ -12,21 +12,18 @@ export class CommentUtilsService {
     private route: ActivatedRoute
   ) {}
 
-  /**
-   * Toggles the visibility of a reply form
-   * Can be used in any comment component
-   */
+
   public toggleReplyForm(event: Event): void {
     console.log('Toggle reply form');
     const button = event.target as HTMLElement;
     if (!button) return;
     
-    // Find the closest reply form
+
     let parent = button.closest('.action-buttons') || button.closest('.comment-actions');
     let container = parent?.closest('.comment-content');
     let replyForm = button.closest('.reply-form') as HTMLElement | null;
 
-    // If we clicked a cancel button
+    // If clicked a cancel button
     if (button.classList.contains('cancel-reply')) {
       // Hide this specific reply form
       if (replyForm) {
@@ -72,8 +69,7 @@ export class CommentUtilsService {
     this.questionsService.postComment(comment, questionId, parentId, type).subscribe({
       next: (response) => {
         console.log('Comment posted successfully:', response);
-        // You might want to emit an event or return an observable here
-        // to notify the components to refresh their data
+       
       },
       error: (error) => {
         console.error('Error posting comment:', error);

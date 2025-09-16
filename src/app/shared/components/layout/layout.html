@@ -1,15 +1,14 @@
 <div class="container-xxl">
   <div class="row">
-    <!-- Left Sidebar - Shows first on mobile -->
+
     <app-sidenav class="col-lg-2 col-md-3 col-12 order-first"></app-sidenav>
 
-    <!-- Main Content Area - Shows second on mobile -->
     <div class="col-lg-7 col-md-9 col-12 order-second main-content">
-      <!-- This is where the projected content will go -->
+
       <ng-content></ng-content>
     </div>
 
-    <!-- Right Sidebar - Shows third on mobile -->
+
     <app-aside-home class="col-lg-3 col-12 order-third"></app-aside-home>
   </div>
 </div>

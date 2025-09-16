@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 export class Comments {
   protected comments: Comment[] = [];
   private questionId!: string;
-  @Input('qu-id') quId!: string;
+  @Input('qu-id') quId!: number;
   protected isLoading: boolean = true;
   protected commentForm: FormGroup;
   protected replyForms: Map<string, FormGroup> = new Map();

@@ -1,6 +1,9 @@
-Autorizacija
+Autorizacija - done
 Postovanje pitanja
 Postovanje komentara
 Promena korisnickih podataka
 
 sredi aside sekcije i to je to za ceo projekat
+
+sve to je gotovo samo nisi stigao da uradis dizajn na frontu da kada user nije autentifikovan da mu butu disabled dugmad za postavljanje komentara i upvote i downvote.
+Sem toga sve je gotovo.

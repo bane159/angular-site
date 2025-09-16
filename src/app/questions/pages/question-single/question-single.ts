@@ -4,7 +4,7 @@ import { Sidenav } from '../../../components/sidenav/sidenav';
 import { IQuestionSingle } from '../../interfaces/iquestion-single';
 import { QuestionsService } from '../../services/questions-service';
 // import { DatePipe } from '@angular/common';
-
+import { AuthService } from '../../../users/services/auth';
 import { UploadedAgoPipe } from '../../pipes/uploaded-ago-pipe';
 import { UserService } from '../../../users/services/user-service';
 import { TopAnswer } from "../../../comments/components/top-answer/top-answer";
@@ -24,7 +24,7 @@ import { Comments } from "../../../comments/components/comments/comments";
 })
 export class QuestionSingle {
 
-
+  protected isLogged: boolean = false;
   protected question!: IQuestionSingle; 
   private id: string | null = null;
   protected reputation: string | null = null;
@@ -32,7 +32,12 @@ export class QuestionSingle {
   protected isLoading: boolean = true;
   protected isVoting: boolean = false;
 
-  constructor(private route: ActivatedRoute, private questionService: QuestionsService, private userService: UserService) {
+ 
+  public getUserIdAsNumber(): number {
+    return this.question?.userId ? parseInt(this.question.userId, 10) : 0;
+  }
+
+  constructor(private route: ActivatedRoute, private questionService: QuestionsService, private userService: UserService, private authService: AuthService) {
     this.route.paramMap.subscribe((params) => {
        this.id = params.get('id');
       
@@ -42,6 +47,8 @@ export class QuestionSingle {
 
   ngOnInit(): void {
 
+      this.isLogged = this.authService.isLoggedIn();
+      console.log(this.isLogged + "ULOGOVANN JE ");
       this.isLoading = true;
       if (this.id) {
         console.log(this.id + ' OVO jE ID');

@@ -3,14 +3,38 @@ export interface Comment {
   comment: string;
   votes: number;
   created_at: string;
-  user: User;
+  user: {
+    id: number;
+    name: string;
+    username: string;
+  };
   replies?: CommentReply[];
 }
 
-export interface User {
-  id: string;
-  name: string;
-  username: string;
+export interface TopComment {
+  id: number;
+  comment: string;
+  votes: number;
+  created_at: string;
+  user: {
+    id: number;
+    name: string;
+    username: string;
+  };
+  replies: CommentReply[];
+}
+
+export interface Answer {
+  id: number;
+  comment: string;
+  votes: number;
+  created_at: string;
+  user: {
+    id: number;
+    name: string;
+    username: string;
+  };
+  replies?: CommentReply[];
 }
 
 export interface CommentReply {
@@ -18,6 +42,10 @@ export interface CommentReply {
   comment: string;
   votes: number;
   created_at: string;
-  user: User;
+  user: {
+    id: number;
+    name: string;
+    username: string;
+  };
   replies?: CommentReply[];
 }
