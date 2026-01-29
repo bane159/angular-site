@@ -32,12 +32,12 @@ export class Comments {
   ) {
      this.questionId = route.snapshot.params['id'];
      
-     // Initialize comment form
+     
      this.commentForm = this.fb.group({
        content: ['', [Validators.required, Validators.minLength(1)]]
      });
     
-    // Get general comments
+   
     
   }
 
