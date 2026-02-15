@@ -1,7 +1,7 @@
 # Bitter! — Q&A Platform
 
 A Stack Overflow-inspired Q&A web application built with **Angular 20** and **Bootstrap 5**. Users can ask questions, post answers and comments, vote on content, and manage their profiles.
-
+This project is hosted and can be visited [here](https://angular-bitter.branislav.dev/).
 ## Tech Stack
 
 - **Angular 20** — standalone components with lazy-loaded routes
