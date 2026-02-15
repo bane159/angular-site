@@ -44,7 +44,7 @@ export class AskQuestion implements OnInit{
         this.categories = categories;
       },
       error: (error) => {
-        console.error('Error fetching categories:', error);
+        this.errorMessage = 'Failed to load categories.';
       }
     });
   }
@@ -60,7 +60,6 @@ export class AskQuestion implements OnInit{
     }
 
     const formData = this.questionForm.value;
-    console.log('Question data:', formData);
 
     const tagsArray = formData.tags
       ? formData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0)
@@ -70,8 +69,6 @@ export class AskQuestion implements OnInit{
       ...formData,
       tags: tagsArray
     };
-    
-    console.log('Processed question data:', questionData);
     
     // TODO: Add actual question submission logic here
     this.questionService.createQuestion(questionData).subscribe({

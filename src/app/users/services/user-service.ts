@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { TopUser } from '../interface/top-user';
 import { User } from '../interface/user';
+import { environment } from '../../../environments/environment';
 
 interface UserUpdateResponse {
   message: string;
@@ -13,7 +14,7 @@ interface UserUpdateResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
   
   constructor(private http: HttpClient) { }
 

@@ -35,7 +35,6 @@ export class TopUsersPage implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading top users', error);
         this.errorMessage = 'Failed to load top users. Please try again later.';
         this.isLoading = false;
       }

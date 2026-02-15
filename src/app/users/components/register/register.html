@@ -104,7 +104,7 @@
                 </div>
               }
               <div class="form-text">
-                Password must be at least 6 characters long
+                Password must be at least 8 characters long
               </div>
             </div>
             
@@ -113,10 +113,15 @@
               <button 
                 type="submit" 
                 class="btn btn-primary btn-lg" 
-                [disabled]="registerForm.invalid"
+                [disabled]="registerForm.invalid || isLoading"
               >
-                <i class="fas fa-user-plus me-2"></i>
-                Create Account
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Creating Account...
+                } @else {
+                  <i class="fas fa-user-plus me-2"></i>
+                  Create Account
+                }
               </button>
             </div>
           </form>

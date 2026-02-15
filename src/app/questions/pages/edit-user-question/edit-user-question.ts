@@ -55,7 +55,7 @@ export class EditUserQuestion implements OnInit {
         this.categories = categories;
       },
       error: (error) => {
-        console.error('Error fetching categories:', error);
+        this.errorMessage = 'Failed to load categories.';
       }
     });
   }
@@ -70,7 +70,6 @@ export class EditUserQuestion implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Error loading question:', error);
           this.errorMessage = 'Failed to load question. Please try again.';
           this.isLoading = false;
         }
@@ -109,7 +108,6 @@ export class EditUserQuestion implements OnInit {
     }
 
     const formData = this.questionForm.value;
-    console.log('Updating question data:', formData);
 
     const tagsArray = formData.tags
       ? formData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0)
@@ -120,16 +118,12 @@ export class EditUserQuestion implements OnInit {
       tags: tagsArray
     };
     
-    console.log('Processed question update data:', questionData);
-    
     this.questionService.updateQuestion(this.questionId, questionData).subscribe({
       next: () => {
-        console.log('Question updated successfully');
         this.router.navigate(['/question', this.questionId]);
         this.isSubmitting = false;
       },
       error: (error) => {
-        console.error('Error updating question:', error);
         this.errorMessage = error.message || 'Failed to update question. Please try again.';
         this.isSubmitting = false;
       }

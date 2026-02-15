@@ -35,7 +35,6 @@ export class TagsPage implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading tags', error);
         this.errorMessage = 'Failed to load tags. Please try again later.';
         this.isLoading = false;
       }

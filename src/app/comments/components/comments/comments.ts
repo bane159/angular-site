@@ -6,6 +6,8 @@ import { CommentUtilsService } from '../../services/comment-utils.service';
 import { QuestionsService } from '../../../questions/services/questions-service';
 import { Comment } from '../../interfaces/comment';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../users/services/auth';
+import { FlashMessageService } from '../../../shared/services/flash-message.service';
 
 @Component({
   selector: 'app-comments',
@@ -22,14 +24,18 @@ export class Comments {
   protected replyForms: Map<string, FormGroup> = new Map();
   protected isSubmitting = false;
   protected isVoting = false;
+  protected isLogged = false;
 
   constructor(
     protected commentService: CommentsService, 
     private route: ActivatedRoute,
     protected commentUtils: CommentUtilsService,
     private questionsService: QuestionsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private flashMessage: FlashMessageService
   ) {
+     this.isLogged = this.authService.isLoggedIn();
      this.questionId = route.snapshot.params['id'];
      
      
@@ -54,20 +60,22 @@ export class Comments {
   }
 
   public onSubmitComment(): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('post a comment');
+      return;
+    }
     if (this.commentForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       const content = this.commentForm.get('content')?.value;
       
       this.questionsService.postComment(content, this.questionId, null, 'comment').subscribe({
         next: (response) => {
-          console.log('Comment posted successfully:', response);
           this.commentForm.reset();
           this.isSubmitting = false;
           // Refresh comments
           this.loadComments();
         },
         error: (error) => {
-          console.error('Error posting comment:', error);
           this.isSubmitting = false;
         }
       });
@@ -75,6 +83,10 @@ export class Comments {
   }
 
   public onSubmitReply(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('post a reply');
+      return;
+    }
     const commentIdStr = commentId.toString();
     const replyForm = this.replyForms.get(commentIdStr);
     if (replyForm?.valid && !this.isSubmitting) {
@@ -83,14 +95,12 @@ export class Comments {
       
       this.questionsService.postComment(content, this.questionId, commentIdStr, 'comment').subscribe({
         next: (response) => {
-          console.log('Reply posted successfully:', response);
           replyForm.reset();
           this.isSubmitting = false;
           // Refresh comments
           this.loadComments();
         },
         error: (error) => {
-          console.error('Error posting reply:', error);
           this.isSubmitting = false;
         }
       });
@@ -111,11 +121,9 @@ export class Comments {
     this.commentService.getGeneralComments(this.questionId).subscribe({
       next: (comments) => {
         this.comments = comments;
-        console.log('General comments:', this.comments);
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error fetching comments:', err);
         this.isLoading = false;
       }
     });
@@ -123,34 +131,38 @@ export class Comments {
 
   // Voting methods
   public upvoteComment(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a comment');
+      return;
+    }
     if (this.isVoting) return;
     
     this.isVoting = true;
     this.questionsService.voteOnComment(commentId, 'upvote').subscribe({
       next: (response) => {
-        console.log('Upvote successful:', response);
         this.updateCommentVotes(commentId, response.current_votes);
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error upvoting comment:', error);
         this.isVoting = false;
       }
     });
   }
 
   public downvoteComment(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a comment');
+      return;
+    }
     if (this.isVoting) return;
     
     this.isVoting = true;
     this.questionsService.voteOnComment(commentId, 'downvote').subscribe({
       next: (response) => {
-        console.log('Downvote successful:', response);
         this.updateCommentVotes(commentId, response.current_votes);
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error downvoting comment:', error);
         this.isVoting = false;
       }
     });

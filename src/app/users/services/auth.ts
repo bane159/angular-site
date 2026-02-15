@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../interface/user';
+import { environment } from '../../../environments/environment';
 
 interface LoginResponse {
   token: string;
@@ -23,19 +24,18 @@ export class AuthService {
   ) {}
 
   login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('http://localhost:8000/api/auth/login', { 
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, { 
       email, 
       password 
     }).pipe(
       tap(response => {
         this.setSession(response)
-        console.log('User logged in:', response);
       })
     );
   }
 
   register(name: string, lastname: string, username: string, email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('http://localhost:8000/api/auth/register', {
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/register`, {
       name,
       lastname,
       username,
@@ -44,8 +44,6 @@ export class AuthService {
     }).pipe(
       tap(response => {
         this.setSession(response)
-        console.log('User registered:', response);
-
       })
     );
   }
@@ -63,7 +61,6 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem(this.userKey);
-    console.log('Current user:', userStr);
     return userStr ? JSON.parse(userStr) : null;
   }
 
@@ -77,7 +74,6 @@ export class AuthService {
 
   updateCurrentUser(updatedUser: User): void {
     localStorage.setItem(this.userKey, JSON.stringify(updatedUser));
-    console.log('Current user updated:', updatedUser);
   }
 
   private setSession(authResult: LoginResponse): void {

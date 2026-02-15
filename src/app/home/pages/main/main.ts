@@ -73,7 +73,6 @@ export class Main implements OnInit {
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error('Search error:', err);
         this.isLoading = false;
       }
     });
@@ -102,7 +101,6 @@ export class Main implements OnInit {
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error(err);
         this.isLoading = false;
       }
     });
@@ -137,7 +135,6 @@ export class Main implements OnInit {
   
   onTagChange(tag: string) {
     this.selectedTag = tag;
-    console.log('Selected tag:', this.selectedTag);
     
     // In search mode, we don't apply tag filters
     if (this.isSearchMode) {

@@ -15,6 +15,7 @@ import { Layout } from "../../../shared/components/layout/layout";
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string | null = null;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +27,7 @@ export class RegisterComponent {
       lastname: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -36,22 +37,21 @@ export class RegisterComponent {
       return;
     }
 
+    this.isLoading = true;
+    this.errorMessage = null;
+
     const formData = this.registerForm.value;
-    console.log('Registration data:', formData);
-    
 
-
-
-      this.authService.register(formData.name, formData.lastname, formData.username, formData.email, formData.password).subscribe({
-        next: () => {
-          console.log('Registration successful');
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error('Registration error:', error);
-          this.errorMessage = 'Registration failed. Please try again. ' + error.message;
-        }
-      });
+    this.authService.register(formData.name, formData.lastname, formData.username, formData.email, formData.password).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+      }
+    });
   }
 
   private markFormGroupTouched(): void {

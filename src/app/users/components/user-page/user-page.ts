@@ -64,7 +64,6 @@ export class UserPage implements OnInit {
   private loadUserData(): void {
     // Populate forms with current user data
     if (this.currentUser) {
-      console.log(this.currentUser.lastname + ' OVO JE LASTNAME');
       this.personalForm.patchValue({
         firstName: this.currentUser.name || '',
         lastName: this.currentUser.lastname || ''
@@ -143,7 +142,6 @@ export class UserPage implements OnInit {
 
     this.userService.updateAccountInfo(username, email).subscribe({
       next: (response) => {
-        console.log(response);
         this.accountSuccess = response.message || 'Account information updated successfully!';
         this.isSubmittingAccount = false;
         // Update current user data using AuthService

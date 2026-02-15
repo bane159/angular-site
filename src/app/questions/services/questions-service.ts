@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { IQuestionSingle } from '../interfaces/iquestion-single';
 import { IQuestionCategory } from '../interfaces/iquestion-category';
 import { IQuestionForEdit } from '../interfaces/iquestion-for-edit';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,20 +19,18 @@ export class QuestionsService {
 
 
   getQuestions(): Observable<IQuestionSingle[]> {
-    const path = 'http://localhost:8000/api/questions/popular';
+    const path = `${environment.apiUrl}/questions/popular`;
     return this.http.get<IQuestionSingle[]>(path);
   }
 
   searchQuestions(query: string): Observable<IQuestionSingle[]> {
-    const path = `http://localhost:8000/api/questions/search?q=${encodeURIComponent(query)}`;
-    console.log(path);
+    const path = `${environment.apiUrl}/questions/search?q=${encodeURIComponent(query)}`;
     return this.http.get<IQuestionSingle[]>(path);
   }
 
 
 
   filter(criteria: string, questionsToFilter: IQuestionSingle[]): IQuestionSingle[] {
-    console.log('Filtering questions with criteria:', criteria);
     return questionsToFilter.filter(question => {
       switch (criteria) {
         case 'answered':
@@ -47,18 +46,16 @@ export class QuestionsService {
   }
 
   getAllCategories(): Observable<IQuestionCategory[]> {
-    const path = 'http://localhost:8000/api/question/categories';
+    const path = `${environment.apiUrl}/question/categories`;
     return this.http.get<IQuestionCategory[]>(path);
   }
 
   getQuestionById(id: string): Observable<IQuestionSingle> {
-    console.log('Fetching question with ID:', id);
-    const path = `http://localhost:8000/api/questions/` + id;
+    const path = `${environment.apiUrl}/questions/` + id;
     return this.http.get<IQuestionSingle>(path);
   }
   getQuestionByIdForEdit(id: string): Observable<IQuestionForEdit> {
-    console.log('Fetching question for edit with ID:', id);
-    const path = `http://localhost:8000/api/questions/` + id + '/edit';
+    const path = `${environment.apiUrl}/questions/` + id + '/edit';
     return this.http.get<IQuestionForEdit>(path);
   }
 
@@ -68,8 +65,7 @@ export class QuestionsService {
     category: string;
     tags: string[];
   }) {
-    const path = 'http://localhost:8000/api/questions';
-    console.log('Creating question:', questionData);
+    const path = `${environment.apiUrl}/questions`;
     return this.http.post(path, questionData);
   }
 
@@ -79,20 +75,17 @@ export class QuestionsService {
     category: string;
     tags: string[];
   }): Observable<any> {
-    const path = `http://localhost:8000/api/questions/${questionId}`;
-    console.log('Updating question:', questionId, questionData); 
+    const path = `${environment.apiUrl}/questions/${questionId}`;
     return this.http.put(path, questionData);
   }
 
   getUserQuestions(userId: number | null): Observable<IQuestionHome[]> {
-    const path = `http://localhost:8000/api/users/${userId}/questions`;
-    console.log('Fetching questions for user:', userId);
+    const path = `${environment.apiUrl}/users/${userId}/questions`;
     return this.http.get<IQuestionHome[]>(path);
   }
 
   deleteQuestion(questionId: number): Observable<any> {
-    const path = `http://localhost:8000/api/questions/${questionId}`;
-    console.log('Deleting question:', questionId);
+    const path = `${environment.apiUrl}/questions/${questionId}`;
     return this.http.delete(path);
   }
 
@@ -105,7 +98,7 @@ export class QuestionsService {
     parentId: string | null = null, 
     type: 'comment' | 'answer' = 'comment'
   ): Observable<any> {
-    const path = `http://localhost:8000/api/questions/${questionId}/comments`;
+    const path = `${environment.apiUrl}/questions/${questionId}/comments`;
     return this.http.post(path, { 
       comment: comment, 
       parent_id: parentId,
@@ -115,13 +108,13 @@ export class QuestionsService {
 
 
   voteOnQuestion(questionId: string, voteType: 'upvote' | 'downvote'): Observable<any> {
-    const path = `http://localhost:8000/api/questions/${questionId}/vote`;
+    const path = `${environment.apiUrl}/questions/${questionId}/vote`;
     return this.http.post(path, { vote_type: voteType });
   }
 
 
   voteOnComment(commentId: number, voteType: 'upvote' | 'downvote'): Observable<any> {
-    const path = `http://localhost:8000/api/comments/${commentId}/vote`;
+    const path = `${environment.apiUrl}/comments/${commentId}/vote`;
     return this.http.post(path, { vote_type: voteType });
   }
 }

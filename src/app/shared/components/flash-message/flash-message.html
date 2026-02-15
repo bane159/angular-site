@@ -1,0 +1,33 @@
+@if (currentMessage) {
+  <div 
+    class="flash-message-overlay"
+    [class.visible]="visible"
+    (click)="dismiss()">
+    <div 
+      class="flash-message"
+      [class.flash-warning]="currentMessage.type === 'warning'"
+      [class.flash-error]="currentMessage.type === 'error'"
+      [class.flash-info]="currentMessage.type === 'info'"
+      [class.flash-success]="currentMessage.type === 'success'"
+      [class.show]="visible"
+      (click)="$event.stopPropagation()">
+      <div class="flash-icon">
+        @if (currentMessage.type === 'warning') {
+          <i class="fas fa-exclamation-triangle"></i>
+        } @else if (currentMessage.type === 'error') {
+          <i class="fas fa-times-circle"></i>
+        } @else if (currentMessage.type === 'info') {
+          <i class="fas fa-info-circle"></i>
+        } @else if (currentMessage.type === 'success') {
+          <i class="fas fa-check-circle"></i>
+        }
+      </div>
+      <div class="flash-content">
+        <span class="flash-text">{{ currentMessage.message }}</span>
+      </div>
+      <button class="flash-close" (click)="dismiss()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+}

@@ -43,7 +43,7 @@
             <button 
               class="btn btn-outline-secondary btn-sm mb-2"
               (click)="upvoteQuestion()"
-              [disabled]="isLogged && isVoting"
+              [disabled]="isVoting"
               title="Upvote this question">
               <i class="fas fa-chevron-up"></i>
             </button>
@@ -51,7 +51,7 @@
             <button 
               class="btn btn-outline-secondary btn-sm mt-2"
               (click)="downvoteQuestion()"
-              [disabled]="isLogged && isVoting"
+              [disabled]="isVoting"
               title="Downvote this question">
               <i class="fas fa-chevron-down"></i>
             </button>

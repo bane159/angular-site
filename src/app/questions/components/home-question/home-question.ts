@@ -16,8 +16,4 @@ import { IQuestionSingle } from '../../interfaces/iquestion-single';
 export class HomeQuestion {
   @Input() question!: IQuestionSingle;
 
-  ngOnInit() {
-    console.log(this.question);
-  }
-
 }

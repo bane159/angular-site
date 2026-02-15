@@ -32,7 +32,6 @@ export class ListUserQuestions implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser) {
-      console.log(this.currentUser.id);
       this.userId = this.currentUser.id;
       this.loadUserQuestions();
     }
@@ -47,7 +46,6 @@ export class ListUserQuestions implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading user questions:', error);
         this.isLoading = false;
       }
     });
@@ -63,17 +61,13 @@ export class ListUserQuestions implements OnInit {
   }
 
   deleteQuestion(questionId: number): void {
-    console.log('Deleting question with ID:', questionId);
     this.isDeleting = true;
       this.questionsService.deleteQuestion(questionId).subscribe({
         next: () => {
-          console.log('Question deleted successfully');
           this.questions = this.questions.filter(q => q.id !== questionId);
-          console.log('Question deleted successfully');
           this.isDeleting = false;
         },
         error: (error) => {
-          console.error('Error deleting question:', error);
           alert('Failed to delete question. Please try again.');
           this.isDeleting = false;
         }

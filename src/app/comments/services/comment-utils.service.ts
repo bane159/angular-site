@@ -14,7 +14,6 @@ export class CommentUtilsService {
 
 
   public toggleReplyForm(event: Event): void {
-    console.log('Toggle reply form');
     const button = event.target as HTMLElement;
     if (!button) return;
     
@@ -52,27 +51,20 @@ export class CommentUtilsService {
     parentId: string | null = null, 
     type: 'comment' | 'answer' = 'comment'
   ): void {
-    console.log('Post comment:', comment);
-    
     const questionId = this.route.snapshot.params['id'];
     
     if (!questionId) {
-      console.error('No question ID found');
       return;
     }
 
     if (!comment.trim()) {
-      console.error('Comment content is required');
       return;
     }
 
     this.questionsService.postComment(comment, questionId, parentId, type).subscribe({
       next: (response) => {
-        console.log('Comment posted successfully:', response);
-       
       },
       error: (error) => {
-        console.error('Error posting comment:', error);
       }
     });
   }

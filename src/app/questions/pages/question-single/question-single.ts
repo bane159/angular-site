@@ -7,6 +7,7 @@ import { QuestionsService } from '../../services/questions-service';
 import { AuthService } from '../../../users/services/auth';
 import { UploadedAgoPipe } from '../../pipes/uploaded-ago-pipe';
 import { UserService } from '../../../users/services/user-service';
+import { FlashMessageService } from '../../../shared/services/flash-message.service';
 import { TopAnswer } from "../../../comments/components/top-answer/top-answer";
 import { Comments } from "../../../comments/components/comments/comments";
 
@@ -37,7 +38,7 @@ export class QuestionSingle {
     return this.question?.userId ? parseInt(this.question.userId, 10) : 0;
   }
 
-  constructor(private route: ActivatedRoute, private questionService: QuestionsService, private userService: UserService, private authService: AuthService) {
+  constructor(private route: ActivatedRoute, private questionService: QuestionsService, private userService: UserService, private authService: AuthService, private flashMessage: FlashMessageService) {
     this.route.paramMap.subscribe((params) => {
        this.id = params.get('id');
       
@@ -48,10 +49,8 @@ export class QuestionSingle {
   ngOnInit(): void {
 
       this.isLogged = this.authService.isLoggedIn();
-      console.log(this.isLogged + "ULOGOVANN JE ");
       this.isLoading = true;
       if (this.id) {
-        console.log(this.id + ' OVO jE ID');
         this.questionService.getQuestionById(this.id).subscribe((question) => {
           this.question = question;
          
@@ -75,7 +74,6 @@ export class QuestionSingle {
 
   
   public toggleReplyForm(button: HTMLElement): void {
-    console.log('da');
    
     let parent = button.closest('.action-buttons') || button.closest('.comment-actions');
     let container = parent?.closest('.answer-content') || parent?.closest('.comment-content');
@@ -106,46 +104,52 @@ export class QuestionSingle {
 
 
   public postComment(comment: string, parent: string): void {
+   if (!this.isLogged) {
+     this.flashMessage.showLoginRequired('post a comment');
+     return;
+   }
    this.questionService.postComment(comment, this.question.id.toString(), parent).subscribe({
      next: (response) => {
-       console.log(response);
      },
      error: (error) => {
-       console.error(error);
      }
    });
   }
 
   // Voting methods for questions
   public upvoteQuestion(): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a question');
+      return;
+    }
     if (this.isVoting || !this.id) return;
     
     this.isVoting = true;
     this.questionService.voteOnQuestion(this.id, 'upvote').subscribe({
       next: (response) => {
-        console.log('Question upvote successful:', response);
         this.question.numberOfVotes = response.current_votes;
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error upvoting question:', error);
         this.isVoting = false;
       }
     });
   }
 
   public downvoteQuestion(): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a question');
+      return;
+    }
     if (this.isVoting || !this.id) return;
     
     this.isVoting = true;
     this.questionService.voteOnQuestion(this.id, 'downvote').subscribe({
       next: (response) => {
-        console.log('Question downvote successful:', response);
         this.question.numberOfVotes = response.current_votes;
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error downvoting question:', error);
         this.isVoting = false;
       }
     });

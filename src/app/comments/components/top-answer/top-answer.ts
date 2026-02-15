@@ -6,6 +6,8 @@ import { CommentUtilsService } from '../../services/comment-utils.service';
 import { QuestionsService } from '../../../questions/services/questions-service';
 import { TopComment, Answer } from '../../interfaces/comment';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../users/services/auth';
+import { FlashMessageService } from '../../../shared/services/flash-message.service';
 
 @Component({
   selector: 'app-top-answer',
@@ -22,6 +24,7 @@ export class TopAnswer {
   protected replyForms: Map<string, FormGroup> = new Map();
   protected isSubmitting = false;
   protected isVoting = false;
+  protected isLogged = false;
   private questionId!: string;
 
   constructor(
@@ -29,8 +32,11 @@ export class TopAnswer {
     private route: ActivatedRoute,
     protected commentUtils: CommentUtilsService,
     private questionsService: QuestionsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private flashMessage: FlashMessageService
   ) {
+    this.isLogged = this.authService.isLoggedIn();
     this.questionId = route.snapshot.params['id'];
     
     // Initialize answer form
@@ -42,11 +48,9 @@ export class TopAnswer {
     commentService.getTopAnswer(this.questionId).subscribe({
       next: (comment) => {
       this.topComment = comment;
-      console.log('Top comment:', this.topComment);
       this.isLoading = false;
       },
       error: (err) => {
-      console.error('Error fetching top comment:', err);
       this.isLoading = false;
       }
     });
@@ -54,7 +58,6 @@ export class TopAnswer {
     // Get all other answers
     commentService.getAllAnswers(this.questionId).subscribe(answers => {
       this.answers = answers;
-      console.log('All answers:', this.answers);
     });
   }
 
@@ -71,20 +74,22 @@ export class TopAnswer {
   }
 
   public onSubmitAnswer(): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('post an answer');
+      return;
+    }
     if (this.answerForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       const content = this.answerForm.get('content')?.value;
       
       this.questionsService.postComment(content, this.questionId, null, 'answer').subscribe({
         next: (response) => {
-          console.log('Answer posted successfully:', response);
           this.answerForm.reset();
           this.isSubmitting = false;
           // Refresh answers
           this.loadAnswers();
         },
         error: (error) => {
-          console.error('Error posting answer:', error);
           this.isSubmitting = false;
         }
       });
@@ -92,6 +97,10 @@ export class TopAnswer {
   }
 
   public onSubmitReply(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('post a reply');
+      return;
+    }
     const commentIdStr = commentId.toString();
     const replyForm = this.replyForms.get(commentIdStr);
     if (replyForm?.valid && !this.isSubmitting) {
@@ -100,14 +109,12 @@ export class TopAnswer {
       
       this.questionsService.postComment(content, this.questionId, commentIdStr, 'comment').subscribe({
         next: (response) => {
-          console.log('Reply posted successfully:', response);
           replyForm.reset();
           this.isSubmitting = false;
           // Refresh answers
           this.loadAnswers();
         },
         error: (error) => {
-          console.error('Error posting reply:', error);
           this.isSubmitting = false;
         }
       });
@@ -131,7 +138,6 @@ export class TopAnswer {
         this.topComment = comment;
       },
       error: (err) => {
-        console.error('Error fetching top comment:', err);
       }
     });
     
@@ -142,34 +148,38 @@ export class TopAnswer {
 
   // Voting methods
   public upvoteComment(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a comment');
+      return;
+    }
     if (this.isVoting) return;
     
     this.isVoting = true;
     this.questionsService.voteOnComment(commentId, 'upvote').subscribe({
       next: (response) => {
-        console.log('Upvote successful:', response);
         this.updateCommentVotes(commentId, response.current_votes);
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error upvoting comment:', error);
         this.isVoting = false;
       }
     });
   }
 
   public downvoteComment(commentId: number): void {
+    if (!this.isLogged) {
+      this.flashMessage.showLoginRequired('vote on a comment');
+      return;
+    }
     if (this.isVoting) return;
     
     this.isVoting = true;
     this.questionsService.voteOnComment(commentId, 'downvote').subscribe({
       next: (response) => {
-        console.log('Downvote successful:', response);
         this.updateCommentVotes(commentId, response.current_votes);
         this.isVoting = false;
       },
       error: (error) => {
-        console.error('Error downvoting comment:', error);
         this.isVoting = false;
       }
     });
